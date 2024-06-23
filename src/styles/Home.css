@@ -1,0 +1,82 @@
+/* Import Mansalva font */
+@import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
+
+.home-page {
+  background-color: #2e2e2e; /* Dark background color */
+  color: white;
+  font-family: 'Mansalva', cursive; /* Apply Mansalva font */
+}
+
+.welcome-section {
+  margin-top: auto;
+}
+
+.welcome-text {
+  color: orange;
+  font-size: 2em;
+}
+
+.sub-text {
+  color: white;
+  font-size: 1.5em;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.image-carousel {
+  width: 100%;
+  max-width: 600px; /* Limit the maximum width of the carousel */
+  margin: auto;
+}
+
+.carousel-img {
+  max-height: 300px; /* Limit the height of the images */
+  object-fit: cover;
+  border-radius: 20px; /* Add rounded corners */
+}
+
+.carousel-img.curved {
+  border-radius: 30px;
+  transform: perspective(1000px) rotateY(15deg);
+}
+
+.try-now-button {
+  background-color: #ff6a00;
+  border: none;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.try-now-button:hover {
+  background-color: #e65c00;
+}
+
+.description-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.description-text {
+  font-size: 1.2em;
+  color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 767.98px) {
+  .welcome-text {
+    font-size: 1.5em;
+  }
+  .sub-text {
+    font-size: 1.2em;
+  }
+  .description-text {
+    font-size: 1em;
+  }
+}
+
+

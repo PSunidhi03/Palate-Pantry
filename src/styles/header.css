@@ -1,0 +1,77 @@
+/* Import Mansalva font */
+@import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
+
+.header-container {
+  background-color: #F95C19; /* Orange background color */
+  padding: 10px 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  width: 50px; /* Adjust the size as needed */
+  margin-right: 5px;
+}
+
+.logo-text {
+  color: white;
+  font-size: 2.2em;
+  font-weight: bold;
+  font-family: 'Mansalva', cursive; /* Apply Mansalva font */
+}
+
+.header-nav {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.header-link {
+  color: white;
+  font-size: 1.3em;
+  text-decoration: none;
+  font-family: 'Mansalva', cursive; /* Apply Mansalva font */
+}
+
+.header-link:hover {
+  text-decoration: underline;
+}
+
+.login-signup .btn {
+  background-color: white; /* Light orange button color */
+  border: none;
+  font-weight: bold;
+  font-family: 'Mansalva', cursive; /* Apply Mansalva font */
+  font-size: 1.2em;
+  color: #F95C19;
+}
+
+
+.login-signup .btn:hover {
+  background-color: #a83706; /* Slightly darker on hover */
+  color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 767.98px) {
+  .logo-text {
+    display: none; /* Hide text on smaller screens */
+  }
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
