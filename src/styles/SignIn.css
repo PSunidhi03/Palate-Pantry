@@ -1,0 +1,33 @@
+body {
+  background-color: #0f0e0e;
+}
+
+.login-card {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 700px;
+  max-width: 100%;
+}
+
+.bg-orange {
+  background-color: #ff6f00;
+}
+
+.text-orange {
+  color: #ff6f00;
+}
+
+.btn-orange {
+  background-color: #ff6f00;
+  color: white;
+}
+
+.btn-orange:hover {
+  background-color: #e65c00;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+}
