@@ -41,17 +41,22 @@ const HomePage = () => {
                 />
               </Carousel.Item>
             </Carousel>
-            {/* <Button variant="warning" className="try-now-button">Try now &rarr;</Button> */}
           </Col>
         </Row>
         <Row className="text-center description-section">
           <Col>
             <p className="description-text">
-              In today's fast-paced world, where time and money are precious, Palate-Pantry is here to help you save both. Our app streamlines meal planning and grocery shopping within your budget, empowering you to manage your culinary tasks effortlessly.
+              In today's fast-paced world, where time and money are precious, Palate-Pantry is here to help you save both. Our app streamlines meal planning and grocery shopping within your budget, empowering you to manage your culinary tasks effortlessly.</p>
+            <p className="description-text-2">
+              From Smart Meal Planning & Custom Shopping Lists to Integrated Pantry Inventory & Allergen Management and Budget Management & Community Features , Palate-Pantry has it all
             </p>
           </Col>
         </Row>
       </Container>
+      {/* <img src='/src/assets/cards.jpeg'></img> */}
+      <div className="button-try-it d-flex justify-content-center ">
+      <button className='try-it'>Try it now</button>
+      </div>
     </div>
     </>
   );
