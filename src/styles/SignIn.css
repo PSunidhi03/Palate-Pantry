@@ -80,8 +80,37 @@
 .signin-button:hover {
     background-color: #e04b0f;
 }
+.sign-in-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 
-.signin-form .social-buttons .col-8, .signin-form .social-buttons .col-2 {
+.sign-in-button {
+  background-color: #F95C19;
+  border: none;
+  color: white;
+  font-weight: bold;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.sign-in-button .button-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.sign-in-button:hover {
+  background-color: #e65c00;
+}
+
+
+/* .signin-form .social-buttons .col-8, .signin-form .social-buttons .col-2 {
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
@@ -112,7 +141,7 @@
 
 .signin-form .social-buttons .col-2:nth-child(3):hover {
     background-color: #333333;
-}
+} */
 .logo-img {
   margin-left: 10px;
   margin-top: 10px;

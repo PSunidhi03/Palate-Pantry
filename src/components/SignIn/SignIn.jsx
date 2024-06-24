@@ -1,5 +1,5 @@
 import '../../styles/SignIn.css';
-
+import { Button, Container, Row, Col } from 'react-bootstrap';
 const SignIn = () => {
   return (
     <div className='sign-in-page container-fluid p-0'>
@@ -30,11 +30,16 @@ const SignIn = () => {
         </div>
         <div><button className='signin-button'>Sign in</button></div>
         <div className="text-center mt-3">Or</div>
-        <div className='row social-buttons'>
-          <button className='col-8'>Sign in with Google</button>
-          <button className='col-2'>Facebook</button>
-          <button className='col-2'>Apple ID</button>
-        </div>
+        <Container className="sign-in-buttons">
+      <Row>
+        <Col className="text-center">
+          <Button variant="light" className="sign-in-button">
+            <img src="/src/assets/google.png" alt="Google" className="button-icon" />
+            Sign in with Google
+          </Button>
+        </Col>
+      </Row>
+    </Container>
       </div>
     </div>
   );
