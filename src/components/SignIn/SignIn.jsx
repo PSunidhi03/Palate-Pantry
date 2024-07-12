@@ -12,7 +12,7 @@ const SignIn = () => {
         <div className='row'>
           <div className='col-6'>
             <p>Welcome to</p>
-            <p>Palate-pantry</p>
+            <p id='p2'>Palate-pantry</p>
           </div>
           <div className='col-6 text-right'>
             <p>No Account?</p>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Carousel, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../Utility/Header';
+import Footer from '../Utility/Footer';
 
 import '../../styles/Home.css'
 const HomePage = () => {
@@ -58,6 +59,7 @@ const HomePage = () => {
       <button className='try-it'>Try it now</button>
       </div>
     </div>
+    <Footer/>
     </>
   );
 }
