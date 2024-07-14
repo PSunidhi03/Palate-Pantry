@@ -206,8 +206,8 @@ const UserDashboard = () => {
       <div className="sidebar">
         <div className="profile">
           <img src="profile-placeholder.png" alt="Profile" className="profile-img"/>
-          <h2>Samantha</h2>
-          <p>samantha@email.com</p>
+          <h2>MoonBow</h2>
+          <p>MoonBow@email.com</p>
         </div>
         <nav className="nav-menu">
           <a href="#dashboard" className="nav-item" onClick={() => setActiveSection('dashboard')}>Dashboard</a>
