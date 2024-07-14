@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import '../../styles/userdashboard.css';
+import { toast,ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+
+// toast.configure();
 
 const UserDashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [userName, setUserName] = useState('Samantha');
-  const [budget, setBudget] = useState('');
-  const [budgetType, setBudgetType] = useState('weekly');
-  const [foodPreferences, setFoodPreferences] = useState('');
+  const [userAge, setUserAge] = useState('');
   const [allergens, setAllergens] = useState('');
-  const [familyMembers, setFamilyMembers] = useState([{ name: '', preferences: '', allergens: '' }]);
+  const [familyMembers, setFamilyMembers] = useState([{ name: '', age: '', allergens: '' }]);
+  const [budgetType, setBudgetType] = useState('weekly');
+  const [budgetAmount, setBudgetAmount] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [expenses, setExpenses] = useState([]);
   const [orders, setOrders] = useState([]);
   const [isEditingUser, setIsEditingUser] = useState(false);
@@ -21,25 +29,39 @@ const UserDashboard = () => {
   };
 
   const addFamilyMember = () => {
-    setFamilyMembers([...familyMembers, { name: '', preferences: '', allergens: '' }]);
+    setFamilyMembers([...familyMembers, { name: '', age: '', allergens: '' }]);
     setIsEditingFamily([...isEditingFamily, true]);
   };
 
   const handleSave = () => {
+    if (!userName.trim()) {
+      toast.error('Name is required for the user');
+      return;
+    }
+
+    for (const member of familyMembers) {
+      if (!member.name.trim()) {
+        toast.error('Name is required for all family members');
+        return;
+      }
+    }
+
     const userData = {
       userName,
-      budget,
-      budgetType,
-      foodPreferences,
+      userAge,
       allergens,
       familyMembers,
+      budgetType,
+      budgetAmount,
+      startDate,
+      endDate,
       expenses,
       orders,
     };
     console.log(userData);
     setIsEditingUser(false);
     setIsEditingFamily(new Array(familyMembers.length).fill(false));
-    // Here you can send the userData to your backend or perform any necessary actions
+    toast.success('Changes saved successfully');
   };
 
   const handleEditUser = () => {
@@ -52,8 +74,36 @@ const UserDashboard = () => {
     setIsEditingFamily(newIsEditingFamily);
   };
 
+  const handleDeleteUser = () => {
+    setUserName('');
+    setUserAge('');
+    setAllergens('');
+    toast.success('User deleted successfully');
+  };
+
+  const handleDeleteFamilyMember = (index) => {
+    const newFamilyMembers = [...familyMembers];
+    newFamilyMembers.splice(index, 1);
+    setFamilyMembers(newFamilyMembers);
+    toast.success('Family member deleted successfully');
+  };
+
+  const calculateDates = () => {
+    let newStartDate = new Date();
+    let newEndDate = new Date();
+    if (budgetType === 'weekly') {
+      newEndDate.setDate(newStartDate.getDate() + 6);
+    } else if (budgetType === 'monthly') {
+      newEndDate.setMonth(newStartDate.getMonth() + 1);
+      newEndDate.setDate(newStartDate.getDate() - 1);
+    }
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+  };
+
   const renderDashboard = () => (
     <div>
+        <ToastContainer/>
       <h1 className="header">User Dashboard</h1>
       {isEditingUser ? (
         <div className="form-container">
@@ -64,15 +114,16 @@ const UserDashboard = () => {
               className="input"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
+              required
             />
           </div>
           <div className="formGroup">
-            <label className="label">Food Preferences</label>
+            <label className="label">Age</label>
             <input
-              type="text"
+              type="number"
               className="input"
-              value={foodPreferences}
-              onChange={(e) => setFoodPreferences(e.target.value)}
+              value={userAge}
+              onChange={(e) => setUserAge(e.target.value)}
             />
           </div>
           <div className="formGroup">
@@ -85,11 +136,12 @@ const UserDashboard = () => {
             />
           </div>
           <button className="saveButton" onClick={handleSave}>Save</button>
+          <button className="deleteButton" onClick={handleDeleteUser}>Delete</button>
         </div>
       ) : (
         <div className="card">
           <h2>{userName}</h2>
-          <p>Food Preferences: {foodPreferences}</p>
+          <p>Age: {userAge}</p>
           <p>Allergens: {allergens}</p>
           <button className="editButton" onClick={handleEditUser}>Edit</button>
         </div>
@@ -97,9 +149,9 @@ const UserDashboard = () => {
     </div>
   );
 
-  const renderExpenses = () => (
+  const renderBudget = () => (
     <div>
-      <h1 className="header">Expenses</h1>
+      <h1 className="header">Budget</h1>
       <div className="formGroup">
         <label className="label">Set Budget:</label>
         <div>
@@ -108,7 +160,7 @@ const UserDashboard = () => {
               type="radio"
               value="weekly"
               checked={budgetType === 'weekly'}
-              onChange={() => setBudgetType('weekly')}
+              onChange={() => { setBudgetType('weekly'); calculateDates(); }}
             />
             Weekly
           </label>
@@ -117,19 +169,26 @@ const UserDashboard = () => {
               type="radio"
               value="monthly"
               checked={budgetType === 'monthly'}
-              onChange={() => setBudgetType('monthly')}
+              onChange={() => { setBudgetType('monthly'); calculateDates(); }}
             />
             Monthly
           </label>
         </div>
         <label className="label">Budget Range:</label>
-        <select className="input" value={budget} onChange={(e) => setBudget(e.target.value)}>
+        <select className="input" value={budgetAmount} onChange={(e) => setBudgetAmount(e.target.value)}>
           <option value="">Select a range</option>
           <option value="100-500">$100 - $500</option>
           <option value="500-1000">$500 - $1000</option>
           <option value="1000-2000">$1000 - $2000</option>
         </select>
       </div>
+      <h2 className="header">Budget Period</h2>
+      <p>Start Date: {startDate.toDateString()}</p>
+      <p>End Date: {endDate.toDateString()}</p>
+      <Calendar
+        value={startDate}
+        onChange={date => setStartDate(date)}
+      />
       <h2 className="header">Previous Expenses</h2>
       <ul>
         {expenses.map((expense, index) => (
@@ -153,15 +212,16 @@ const UserDashboard = () => {
                   className="input"
                   value={member.name}
                   onChange={(e) => handleFamilyMemberChange(index, 'name', e.target.value)}
+                  required
                 />
               </div>
               <div className="formGroup">
-                <label className="label">Preferences</label>
+                <label className="label">Age</label>
                 <input
-                  type="text"
+                  type="number"
                   className="input"
-                  value={member.preferences}
-                  onChange={(e) => handleFamilyMemberChange(index, 'preferences', e.target.value)}
+                  value={member.age}
+                  onChange={(e) => handleFamilyMemberChange(index, 'age', e.target.value)}
                 />
               </div>
               <div className="formGroup">
@@ -174,11 +234,12 @@ const UserDashboard = () => {
                 />
               </div>
               <button className="saveButton" onClick={handleSave}>Save</button>
+              <button className="deleteButton" onClick={() => handleDeleteFamilyMember(index)}>Delete</button>
             </div>
           ) : (
             <div>
               <h2>{member.name}</h2>
-              <p>Preferences: {member.preferences}</p>
+              <p>Age: {member.age}</p>
               <p>Allergens: {member.allergens}</p>
               <button className="editButton" onClick={() => handleEditFamily(index)}>Edit</button>
             </div>
@@ -201,27 +262,36 @@ const UserDashboard = () => {
     </div>
   );
 
+  const renderMealPlan = () => (
+    <div>
+      <h1 className="header">Plan Meals</h1>
+      <p>Feature to plan meals for a week or a month will be implemented here.</p>
+    </div>
+  );
+
   return (
     <div className="dashboard-container">
       <div className="sidebar">
         <div className="profile">
           <img src="profile-placeholder.png" alt="Profile" className="profile-img"/>
-          <h2>MoonBow</h2>
-          <p>MoonBow@email.com</p>
+          <h2>Samantha</h2>
+          <p>samantha@email.com</p>
         </div>
         <nav className="nav-menu">
           <a href="#dashboard" className="nav-item" onClick={() => setActiveSection('dashboard')}>Dashboard</a>
-          <a href="#expenses" className="nav-item" onClick={() => setActiveSection('expenses')}>Expenses</a>
+          <a href="#budget" className="nav-item" onClick={() => setActiveSection('budget')}>Budget</a>
           <a href="#family" className="nav-item" onClick={() => setActiveSection('family')}>Family</a>
           <a href="#orders" className="nav-item" onClick={() => setActiveSection('orders')}>View Orders</a>
+          <a href="#mealplan" className="nav-item" onClick={() => setActiveSection('mealplan')}>Plan Meals</a>
           <a href="#settings" className="nav-item" onClick={() => setActiveSection('settings')}>Settings</a>
         </nav>
       </div>
       <div className="content">
         {activeSection === 'dashboard' && renderDashboard()}
-        {activeSection === 'expenses' && renderExpenses()}
+        {activeSection === 'budget' && renderBudget()}
         {activeSection === 'family' && renderFamily()}
         {activeSection === 'orders' && renderOrders()}
+        {activeSection === 'mealplan' && renderMealPlan()}
         {activeSection === 'settings' && <h1 className="header">Settings</h1>}
       </div>
     </div>
@@ -229,6 +299,7 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+
 
 
 
