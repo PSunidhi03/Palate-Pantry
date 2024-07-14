@@ -7,6 +7,7 @@ import Home from './components/HomePage/Home'
 import SignIn from './components/SignIn/SignIn'
 import Recipe from './components/Recipe/Recipe';
 import CardComponent from './components/Recipe/DataFetch';
+import UserDashboard from './components/User/UserDashboard';
 function App() {
 
 
@@ -25,7 +26,8 @@ function App() {
           {/* </Col> */}
         {/* </Row> */}
       {/* </Container> */}
-      <CardComponent/>
+      {/* <CardComponent/> */}
+    <UserDashboard/>
     </>
   )
 }

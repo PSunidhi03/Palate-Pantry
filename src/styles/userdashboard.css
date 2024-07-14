@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: black;
+  color: orange;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.nav-menu {
+  width: 100%;
+}
+
+.nav-item {
+  display: block;
+  color: orange;
+  padding: 10px 0;
+  text-decoration: none;
+  text-align: center;
+}
+
+.nav-item:hover {
+  background-color: darkorange;
+}
+
+.content {
+  flex: 1;
+  background-color: #f4f4f9;
+  padding: 20px;
+}
+
+.header {
+  color: black;
+  font-family: 'Mansalva', cursive;
+}
+
+.form-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.familyMember {
+  border: 1px solid orange;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+
+.editButton {
+  background-color: orange;
+  color: black;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.addButton, .saveButton {
+  background-color: orange;
+  color: black;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.addButton {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .nav-item {
+    padding: 5px 0;
+  }
+}
+
+

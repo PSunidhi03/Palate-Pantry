@@ -59,7 +59,7 @@ const CardComponent = () => {
             placeholder="Search recipes..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="mb-4"
+            className="mb-4 m-3"
           />
           {filteredData.map((item, index) => (
             <Card className="custom-card mb-3" key={index}>
