@@ -2,7 +2,7 @@
 
 .sign-in-page {
     height: 100vh;
-    background-color: black;
+    background-color: #2e2e2e;
     margin: 0;
     padding: 0;
     font-family: 'Mansalva', cursive;
@@ -25,7 +25,6 @@
     position: absolute;
     top: 104px;
     left: 437px;
-    /* height: 741px; */
     width: 539px;
     background-color: white;
     z-index: 5;
@@ -43,7 +42,6 @@
 .signin-form p {
     font-size: 20px;
     margin: 0;
-
     font-family: 'Mansalva', cursive;
     /* Apply Mansalva font */
 }
@@ -65,7 +63,8 @@
 }
 
 .signin-form input[type="text"],
-.signin-form input[type="password"] {
+.signin-form input[type="password"],
+.signin-form input[type="email"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -83,6 +82,7 @@
     border-radius: 5px;
     font-size: 18px;
     margin-top: 20px;
+    cursor: pointer;
 }
 
 .signin-button:hover {
@@ -119,39 +119,3 @@
 }
 
 
-/* .signin-form .social-buttons .col-8, .signin-form .social-buttons .col-2 {
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-    color: white;
-}
-
-.signin-form .social-buttons .col-8 {
-    background-color: #db4a39;
-}
-
-.signin-form .social-buttons .col-2:nth-child(2) {
-    background-color: #3b5998;
-}
-
-.signin-form .social-buttons .col-2:nth-child(3) {
-    background-color: #000000;
-}
-
-.signin-form .social-buttons .col-8:hover {
-    background-color: #c43d2f;
-}
-
-.signin-form .social-buttons .col-2:nth-child(2):hover {
-    background-color: #2d4373;
-}
-
-.signin-form .social-buttons .col-2:nth-child(3):hover {
-    background-color: #333333;
-} */
-.logo-img {
-    margin-left: 10px;
-    margin-top: 10px;
-}

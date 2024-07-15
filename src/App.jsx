@@ -2,12 +2,13 @@ import './App.css'
 // import Header from './components/Utility/Header'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
-
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/HomePage/Home'
 import SignIn from './components/SignIn/SignIn'
 import Recipe from './components/Recipe/Recipe';
 import CardComponent from './components/Recipe/DataFetch';
 import UserDashboard from './components/User/UserDashboard';
+import SignUp from './components/SignUp/SignUp';
 function App() {
 
 
@@ -22,12 +23,12 @@ function App() {
             {/* Sidebar content like Cart can go here */}
           {/* </Col> */}
           {/* <Col md={10}> */}
-            <CardComponent />
+            {/* <CardComponent /> */}
           {/* </Col> */}
         {/* </Row> */}
       {/* </Container> */}
       {/* <CardComponent/> */}
-    {/* <UserDashboard/> */}
+    <UserDashboard/>
     </>
   )
 }
