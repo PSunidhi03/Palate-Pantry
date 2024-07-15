@@ -22,12 +22,12 @@ function App() {
             {/* Sidebar content like Cart can go here */}
           {/* </Col> */}
           {/* <Col md={10}> */}
-            {/* <CardComponent /> */}
+            <CardComponent />
           {/* </Col> */}
         {/* </Row> */}
       {/* </Container> */}
       {/* <CardComponent/> */}
-    <UserDashboard/>
+    {/* <UserDashboard/> */}
     </>
   )
 }

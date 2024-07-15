@@ -4,6 +4,7 @@ import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Header from '../Utility/Header';
 
 // toast.configure();
 
@@ -270,12 +271,14 @@ const UserDashboard = () => {
   );
 
   return (
+    <><Header/>
+    <ToastContainer/>
     <div className="dashboard-container">
       <div className="sidebar">
         <div className="profile">
-          <img src="profile-placeholder.png" alt="Profile" className="profile-img"/>
-          <h2>Samantha</h2>
-          <p>samantha@email.com</p>
+          <img src="/src/assets/user-profile-filled-svgrepo-com.svg" alt="Profile" className="profile-img"/>
+          <h2>User</h2>
+          <p>User@email.com</p>
         </div>
         <nav className="nav-menu">
           <a href="#dashboard" className="nav-item" onClick={() => setActiveSection('dashboard')}>Dashboard</a>
@@ -295,6 +298,7 @@ const UserDashboard = () => {
         {activeSection === 'settings' && <h1 className="header">Settings</h1>}
       </div>
     </div>
+    </>
   );
 };
 

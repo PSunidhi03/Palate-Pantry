@@ -23,21 +23,21 @@ const HomePage = () => {
               <Carousel.Item>
                 <img
                   className="d-block mx-auto carousel-img"
-                  src="/src/assets/babycorn.jpeg"
+                  src="/src/assets/1.png"
                   alt="First slide"
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="d-block mx-auto carousel-img"
-                  src="/src/assets/paneer.jpeg"
+                  src="/src/assets/2.png"
                   alt="Second slide"
                 />
               </Carousel.Item>
               <Carousel.Item>
                 <img
                   className="d-block mx-auto carousel-img"
-                  src="/src/assets/ingredients.jpeg"
+                  src="/src/assets/img3.png"
                   alt="Third slide"
                 />
               </Carousel.Item>
