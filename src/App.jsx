@@ -7,21 +7,25 @@ import Recipe from "./components/Recipe/Recipe";
 import UserDashboard from "./components/User/UserDashboard";
 import SignUp from "./components/SignUp/SignUp";
 import { AuthProvider } from "./components/Auth/AuthContext";
+import CardComponent from "./components/Recipe/DataFetch";
+import AboutUs from "./components/Utility/AboutusPage/Aboutus";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/recipe" element={<Recipe />} />
-          <Route path="/user-dashboard" element={<UserDashboard />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    // <AuthProvider>
+    //   <Router>
+    //     <Routes>
+    //       <Route path="/signin" element={<SignIn />} />
+    //       <Route path="/signup" element={<SignUp />} />
+    //       <Route path="/home" element={<Home />} />
+    //       <Route path="/recipe" element={<Recipe />} />
+    //       <Route path="/user-dashboard" element={<UserDashboard />} />
+    //       <Route path="/" element={<Home />} />
+    //     </Routes>
+    //   </Router>
+    // </AuthProvider>
+      // <CardComponent/>
+      <AboutUs/>
   );
 }
 
