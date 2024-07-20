@@ -6,6 +6,7 @@ import '../../styles/Card.css';
 
 const CardComponent = () => {
   const [data, setData] = useState([]);
+  const [ingredientsData, setIngredientsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,6 +36,24 @@ const CardComponent = () => {
   }, []);
 
   useEffect(() => {
+    const fetchIngredients = async () => {
+      try {
+        const response = await fetch('https://cuisines-bucket.s3.ap-south-1.amazonaws.com/pantryingredients.csv');
+        const reader = response.body.getReader();
+        const result = await reader.read();
+        const decoder = new TextDecoder('utf-8');
+        const csv = decoder.decode(result.value);
+        const results = Papa.parse(csv, { header: true });
+        setIngredientsData(results.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchIngredients();
+  }, []);
+
+  useEffect(() => {
     const results = data.filter(item =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -47,16 +66,18 @@ const CardComponent = () => {
   };
 
   const addToCart = (item) => {
+    const dishIngredients = ingredientsData.filter(ingredient => ingredient.dish === item.name);
+
     setCartItems(prevItems => {
       const existingItem = prevItems.find(cartItem => cartItem.name === item.name);
       if (existingItem) {
         return prevItems.map(cartItem =>
           cartItem.name === item.name
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            ? { ...cartItem, quantity: cartItem.quantity + 1, ingredients: dishIngredients }
             : cartItem
         );
       } else {
-        return [...prevItems, { ...item, quantity: 1 }];
+        return [...prevItems, { ...item, quantity: 1, ingredients: dishIngredients }];
       }
     });
   };
@@ -72,14 +93,14 @@ const CardComponent = () => {
   };
 
   const decrementQuantity = (item) => {
-  setCartItems(prevItems =>
-    prevItems.map(cartItem =>
-      cartItem.name === item.name
-        ? { ...cartItem, quantity: cartItem.quantity > 1 ? cartItem.quantity - 1 : 0 }
-        : cartItem
-    ).filter(cartItem => cartItem.quantity > 0) // Remove items with quantity 0
-  );
-};
+    setCartItems(prevItems =>
+      prevItems.map(cartItem =>
+        cartItem.name === item.name
+          ? { ...cartItem, quantity: cartItem.quantity > 1 ? cartItem.quantity - 1 : 0 }
+          : cartItem
+      ).filter(cartItem => cartItem.quantity > 0) // Remove items with quantity 0
+    );
+  };
 
   const calculateSubtotal = () => {
     return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
@@ -120,6 +141,11 @@ const CardComponent = () => {
                   <span>{item.quantity}</span>
                   <button onClick={() => incrementQuantity(item)}>+</button>
                 </div>
+                <ul className="cart-item-ingredients">
+                  {item.ingredients.map((ingredient, i) => (
+                    <li key={i}>{ingredient.name}: {ingredient.quantity}</li>
+                  ))}
+                </ul>
               </div>
             ))}
             <div className="cart-total">
@@ -191,6 +217,7 @@ const CardComponent = () => {
 };
 
 export default CardComponent;
+
 
 
 

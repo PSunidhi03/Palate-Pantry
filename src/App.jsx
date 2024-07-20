@@ -1,8 +1,8 @@
-import './App.css'
+// import './App.css'
 // import Header from './components/Utility/Header'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './components/HomePage/Home'
 import SignIn from './components/SignIn/SignIn'
 import Recipe from './components/Recipe/Recipe';
@@ -27,8 +27,8 @@ function App() {
           {/* </Col> */}
         {/* </Row> */}
       {/* </Container> */}
-      {/* <CardComponent/> */}
-    <UserDashboard/>
+      <CardComponent/>
+    {/* <UserDashboard/> */}
     </>
   )
 }

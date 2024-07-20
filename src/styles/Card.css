@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
 
+
 body {
   font-family: 'Mansalva', cursive;
   background-color:  #2e2e2e;
@@ -156,6 +157,49 @@ body {
 
 .blur-background {
   filter: blur(5px);
+}
+
+.cart-item-ingredients {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-item-ingredients li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.cart-item-ingredients button {
+  margin-left: 5px;
+}
+
+.cart {
+  /* background-color: #f9f9f9; */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.cart-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-controls button {
+  margin: 0 5px;
+}
+
+.cart-total {
+  margin-top: 20px;
+}
+
+.proceed-to-checkout {
+  width: 100%;
 }
 
 
