@@ -271,7 +271,8 @@ const UserDashboard = () => {
   );
 
   return (
-    <><Header/>
+    <>
+    <Header/>
     <ToastContainer/>
     <div className="dashboard-container">
       <div className="sidebar">
