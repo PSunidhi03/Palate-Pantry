@@ -1,0 +1,138 @@
+/* Import Mansalva font */
+@import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
+
+.pantry-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: 'Mansalva', cursive;
+    font-size: larger;
+}
+
+.search-bar {
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+.search-bar input {
+    width: calc(100% - 150px);
+    padding: 10px;
+    border: 2px solid #ff6a00;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container {
+    width: 90%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.category-filter {
+    padding: 10px;
+    border: 2px solid #ff6a00;
+    border-radius: 5px;
+    background-color: #2e2e2e;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pantry-content {
+    display: flex;
+    width: 100%;
+}
+
+.items-list {
+    flex: 0 0 75%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.item-card {
+    background-color: #2e2e2e;
+    color: white;
+    border: 2px solid #ff6a00;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 200px; /* Set consistent width */
+    height: 400px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.item-card:hover {
+    border: 4px solid #e65c00; /* Thicker border on hover */
+}
+
+.item-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.item-details {
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.item-title {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.item-quantity, .item-price {
+    margin: 5px 0;
+}
+
+.add-to-cart {
+    background-color: #ff6a00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Ensure button takes full width */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.add-to-cart:hover {
+    background-color: #e65c00;
+}
+
+.cart-section {
+    flex: 0 0 25%;
+    background-color: #393939;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 10px; /* Stick to the top of the container */
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Allow scrolling within the cart section */
+}
+
+
+
+
+
+
+

@@ -9,6 +9,7 @@ import SignUp from "./components/SignUp/SignUp";
 import { AuthProvider } from "./components/Auth/AuthContext";
 import CardComponent from "./components/Recipe/DataFetch";
 import AboutUs from "./components/Utility/AboutusPage/Aboutus";
+import PantryPage from "./components/pantrypage/pantry";
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
     //   </Router>
     // </AuthProvider>
       // <CardComponent/>
-      <AboutUs/>
+      // <AboutUs/>
+      <PantryPage/>
   );
 }
 
