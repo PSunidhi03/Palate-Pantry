@@ -1,13 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
 
+.about-us-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #2e2e2e;
+}
+
 .about-us {
     background-color: #2e2e2e;
     color: white;
     padding: 20px;
-    max-width: 1000px;
-    margin: auto;
+    max-width: 90%;
+    margin: 20px 0;
     border-radius: 10px;
     font-family: 'Mansalva', cursive;
+    font-size: larger;
 }
 
 .about-us h1, .about-us h2 {
@@ -35,11 +44,41 @@
     background-color: #393939;
     border-left: 5px solid #ff6a00;
     border-radius: 5px;
-    font-size: larger;
 }
+
+.image-scroller-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 20px 0;
+}
+
+.image-scroller {
+    display: flex;
+    width: calc(150px * 12 * 2); /* Adjust this calculation based on your image width and count */
+    animation: scroll 40s linear infinite;
+}
+
+.image-scroller img {
+    width: 150px;
+    height: 150px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
 
 .faq-section {
     margin-top: 30px;
+    width: 90%; /* Ensure FAQ section has a consistent width */
 }
 
 .faq {
@@ -48,12 +87,13 @@
     border-radius: 5px;
     padding: 10px;
     cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transition */
+    font-size: larger;
 }
 
 .faq-question {
     font-weight: bold;
     color: black;
-    font-size: larger;
 }
 
 .faq-answer {
@@ -62,11 +102,18 @@
     padding: 10px;
     background-color: #e65c00;
     border-radius: 5px;
+    display: none; /* Hide by default */
 }
+
+.faq.open .faq-answer {
+    display: block; /* Show when FAQ is open */
+}
+
 
 .team-section {
     margin-top: 30px;
     text-align: center;
+    font-size: larger;
 }
 
 .team-member {
@@ -76,7 +123,8 @@
     padding: 10px;
     border-radius: 5px;
     display: inline-block;
-    font-size: larger;
 }
+
+
 
 
