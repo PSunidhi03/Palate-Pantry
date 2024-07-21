@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Header from "../Utility/Header";
 import Papa from "papaparse";
 import {
   Card,
@@ -207,7 +208,8 @@ const CardComponent = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  return (
+  return (<>
+  <Header/>
     <Container fluid>
       <Row className="mb-4">
         <Col md={3}>
@@ -330,6 +332,7 @@ const CardComponent = () => {
         </div>
       )}
     </Container>
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import AboutUs from "./components/Utility/AboutusPage/Aboutus";
 import PantryPage from "./components/pantrypage/pantry";
 import Pantry from "./components/Recipe/pantry";
 import CartWithRecipe from "./components/Recipe/finalcart";
+import HomePage from "./components/HomePage/Home";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/about-us" element={<AboutUs />} />
           <Route path="/recipe" element={<CardComponent />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/final-cart" element={<CartWithRecipe />} />

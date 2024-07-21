@@ -14,9 +14,9 @@ function Header() {
           </div>
           <nav className="header-nav col-12 col-md-6 d-flex justify-content-center justify-content-md-center">
             <a href="#home" className="header-link">Home</a>
-            <a href="#services" className="header-link">Our Services</a>
-            <a href="#about" className="header-link">About Us</a>
-            <a href="#news" className="header-link">What's new?</a>
+            <a href="#services" className="header-link">About us</a>
+            <a href="#about" className="header-link">Meals</a>
+            <a href="#news" className="header-link">Pantry</a>
           </nav>
           <div className="login-signup col-6 col-md-3 d-flex justify-content-end">
             <a href="#login" className="btn btn-light">Login/Signup</a>

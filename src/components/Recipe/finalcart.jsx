@@ -36,6 +36,10 @@ const CardComponent = () => {
   }, [recipeCart]);
 
   useEffect(() => {
+    updateIngredientCart(allIngredients);
+  }, [allIngredients]);
+
+  useEffect(() => {
     const processIngredients = (ingredientString) => {
       const cleanedString = ingredientString.replace(/\t/g, "").trim();
       return cleanedString
@@ -52,7 +56,6 @@ const CardComponent = () => {
 
     const uniqueIngredients = Array.from(ingredientSet);
     setAllIngredients(uniqueIngredients);
-    console.log(uniqueIngredients);
   }, [cartItems]);
 
   useEffect(() => {
@@ -177,13 +180,56 @@ const CardComponent = () => {
       return updatedCart;
     });
   };
+const [ingredientQuantities, setIngredientQuantities] = useState(
+  ingredientCart.reduce((acc, ingredientName) => {
+    acc[ingredientName] = 1; // Initial quantity
+    return acc;
+  }, {})
+);
 
-  const calculateSubtotal = () => {
-    return cartItems
-      .reduce((acc, item) => acc + item.price * item.quantity, 0)
-      .toFixed(2);
-  };
+const incrementIQuantity = (ingredientName) => {
+  setIngredientQuantities((prevQuantities) => ({
+    ...prevQuantities,
+    [ingredientName]: (prevQuantities[ingredientName] || 0) + 1,
+  }));
+};
 
+const decrementIQuantity = (ingredientName) => {
+  setIngredientQuantities((prevQuantities) => {
+    const newQuantity = Math.max((prevQuantities[ingredientName] || 1) - 1, 0);
+
+    // Remove ingredient from the cart if quantity is 0
+    if (newQuantity === 0) {
+      updateIngredientCart((prevCart) => {
+        return prevCart.filter((item) => item !== ingredientName);
+      });
+    }
+
+    // Ensure that the quantity in the state is updated properly
+    return {
+      ...prevQuantities,
+      [ingredientName]: newQuantity,
+    };
+  });
+};
+  // const calculateSubtotal = () => {
+  //   return cartItems
+  //     .reduce((acc, item) => acc + item.price * item.quantity, 0)
+  //     .toFixed(2);
+  // };
+const calculateIngredientSubtotal = () => {
+  return ingredientCart.reduce((total, ingredientName) => {
+    const ingredient = ingredientsData.find(
+      (item) =>
+        item.Item &&
+        ingredientName &&
+        item.Item.toLowerCase().includes(ingredientName.toLowerCase())
+    );
+    return ingredient
+      ? total + (ingredient.Price * (ingredientQuantities[ingredientName] || 1))
+      : total;
+  }, 0);
+};
   const handleReadMoreToggle = (index) => {
     const newFilteredData = filteredData.map((item, i) => {
       if (i === index) {
@@ -205,8 +251,10 @@ const CardComponent = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  console.log("Current IngredientCart:", ingredientCart); // Log the current allIngredients
   console.log("Current allIngredients:", allIngredients); // Log the current allIngredients
   console.log("Current Pantry ingredients: ", ingredientsData);
+
 
   return (
     <Container fluid>
@@ -233,7 +281,7 @@ const CardComponent = () => {
               </div>
             ))}
             <div className="cart-total">
-              <p>Subtotal: ${calculateSubtotal()}</p>
+              {/* <p>Subtotal: ${calculateSubtotal()}</p> */}
               <Button className="proceed-to-checkout">Buy</Button>
             </div>
           </div>
@@ -243,46 +291,48 @@ const CardComponent = () => {
         </Col>
 
         {/* New column for ingredientCart */}
-        <Col md={6}>
-          <div className="ingredient-cart">
-            <h4>Ingredients Cart</h4>
-            {ingredientCart.length === 0 ? (
-              <p>No ingredients in cart.</p>
-            ) : (
-              <ul>
-                {ingredientCart.map((ingredientName, index) => {
-                  if (!ingredientName) return null; // Skip undefined or empty ingredient names
+<Col md={6}>
+  <div className="ingredient-cart">
+    <h4>Ingredients Cart</h4>
+    {ingredientCart.length === 0 ? (
+      <p>No ingredients in cart.</p>
+    ) : (
+      <ul>
+        {ingredientCart.map((ingredientName, index) => {
+          if (!ingredientName) return null; // Skip undefined or empty ingredient names
 
-                  const ingredient = ingredientsData.find(
-                    (item) =>
-                      item.Item &&
-                      ingredientName &&
-                      item.Item.toLowerCase().includes(
-                        ingredientName.toLowerCase(),
-                      ),
-                  );
+          const ingredient = ingredientsData.find(
+            (item) =>
+              item.Item &&
+              ingredientName &&
+              item.Item.toLowerCase().includes(
+                ingredientName.toLowerCase()
+              )
+          );
 
-                  return (
-                    ingredient && (
-                      <li key={index}>
-                        <img
-                          src={ingredient.image_url}
-                          alt={ingredient.Item}
-                          style={{ width: "50px", height: "50px" }}
-                        />
-                        {ingredient.Item}: {ingredient.Price} (
-                        {ingredient.quantity})
-                      </li>
-                    )
-                  );
-                })}
-              </ul>
-            )}
-            <div className="cart-total">
-              {/* <p>Subtotal: ${calculateIngredientSubtotal()}</p> */}
-            </div>
-          </div>
-        </Col>
+          return (
+            ingredient && (
+              <li key={index}>
+                <img
+                  src={ingredient.image_url}
+                  alt={ingredient.Item}
+                  style={{ width: "50px", height: "50px" }}
+                />
+                {ingredient.Item}: {ingredient.Price} (
+                {ingredientQuantities[ingredientName] || 1})
+                <button onClick={() => decrementIQuantity(ingredientName)}>-</button>
+                <button onClick={() => incrementIQuantity(ingredientName)}>+</button>
+              </li>
+            )
+          );
+        })}
+      </ul>
+    )}
+    <div className="cart-total">
+      <p>Subtotal: Rs {calculateIngredientSubtotal().toFixed(2)}</p>
+    </div>
+  </div>
+</Col>
       </Row>
       {modalContent && (
         <div className="modal" onClick={closeModal}>
@@ -304,3 +354,4 @@ const CardComponent = () => {
 };
 
 export default CardComponent;
+//hiii
