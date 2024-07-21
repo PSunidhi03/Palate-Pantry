@@ -88,16 +88,18 @@ const CardComponent = () => {
     const fetchIngredients = async () => {
       try {
         const response = await fetch(
-          "https://cuisines-bucket.s3.ap-south-1.amazonaws.com/pantryingredients.csv",
+          "https://cuisines-bucket.s3.ap-south-1.amazonaws.com/csvjson.json",
         );
-        const reader = response.body.getReader();
-        const result = await reader.read();
-        const decoder = new TextDecoder("utf-8");
-        const csv = decoder.decode(result.value);
-        const results = Papa.parse(csv, { header: true });
-        setIngredientsData(results.data);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const jsonData = await response.json();
+
+        setIngredientsData(jsonData);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to fetch ingredients:", err.message);
       }
     };
 
@@ -204,6 +206,7 @@ const CardComponent = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   console.log("Current allIngredients:", allIngredients); // Log the current allIngredients
+  console.log("Current Pantry ingredients: ", ingredientsData);
 
   return (
     <Container fluid>
@@ -248,9 +251,17 @@ const CardComponent = () => {
             ) : (
               <ul>
                 {ingredientCart.map((ingredientName, index) => {
+                  if (!ingredientName) return null; // Skip undefined or empty ingredient names
+
                   const ingredient = ingredientsData.find(
-                    (item) => item.Item === ingredientName,
+                    (item) =>
+                      item.Item &&
+                      ingredientName &&
+                      item.Item.toLowerCase().includes(
+                        ingredientName.toLowerCase(),
+                      ),
                   );
+
                   return (
                     ingredient && (
                       <li key={index}>
@@ -259,7 +270,8 @@ const CardComponent = () => {
                           alt={ingredient.Item}
                           style={{ width: "50px", height: "50px" }}
                         />
-                        {ingredient.Item}: {ingredient.Price} ({ingredient.quantity})
+                        {ingredient.Item}: {ingredient.Price} (
+                        {ingredient.quantity})
                       </li>
                     )
                   );
@@ -267,7 +279,7 @@ const CardComponent = () => {
               </ul>
             )}
             <div className="cart-total">
-              <p>Subtotal: ${calculateIngredientSubtotal()}</p>
+              {/* <p>Subtotal: ${calculateIngredientSubtotal()}</p> */}
             </div>
           </div>
         </Col>

@@ -85,21 +85,24 @@ const CardComponent = () => {
     const fetchIngredients = async () => {
       try {
         const response = await fetch(
-          "https://cuisines-bucket.s3.ap-south-1.amazonaws.com/pantryingredients.csv",
+          "https://cuisines-bucket.s3.ap-south-1.amazonaws.com/csvjson.json",
         );
-        const reader = response.body.getReader();
-        const result = await reader.read();
-        const decoder = new TextDecoder("utf-8");
-        const csv = decoder.decode(result.value);
-        const results = Papa.parse(csv, { header: true });
-        setIngredientsData(results.data);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const jsonData = await response.json();
+
+        setIngredientsData(jsonData);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to fetch ingredients:", err.message);
       }
     };
 
     fetchIngredients();
   }, []);
+  console.log(ingredientsData);
 
   useEffect(() => {
     if (searchTerm === "") {
