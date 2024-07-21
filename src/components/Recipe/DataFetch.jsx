@@ -1,26 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import Papa from 'papaparse';
-import { Card, Button, Badge, Container, Row, Col, Form } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/Card.css';
+import React, { useState, useEffect } from "react";
+import Papa from "papaparse";
+import {
+  Card,
+  Button,
+  Badge,
+  Container,
+  Row,
+  Col,
+  Form,
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../../styles/Card.css";
+import { useAuth } from "../Auth/AuthContext";
+import { useFetchCsvData } from "../CsvData/CsvDataContex";
 
 const CardComponent = () => {
+  const { cuisinesData, pantryIngredientsData } = useFetchCsvData();
   const [data, setData] = useState([]);
   const [ingredientsData, setIngredientsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const { recipeCart, ingredientCart, updateRecipeCart, updateIngredientCart } =
+    useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [modalContent, setModalContent] = useState(null);
+  const [allIngredients, setAllIngredients] = useState([]);
+
+  useEffect(() => {
+    // Sync cartItems with recipeCart from AuthContext
+    setCartItems(recipeCart);
+  }, [recipeCart]);
+
+  useEffect(() => {
+    const processIngredients = (ingredientString) => {
+      const cleanedString = ingredientString.replace(/\t/g, "").trim();
+      return cleanedString
+        .split("\n")
+        .map((item) => item.trim())
+        .filter((item) => item);
+    };
+
+    const ingredientSet = new Set();
+    cartItems.forEach((item) => {
+      const ingredients = processIngredients(item["raw ingredients"]);
+      ingredients.forEach((ingredient) => ingredientSet.add(ingredient));
+    });
+
+    const uniqueIngredients = Array.from(ingredientSet);
+    setAllIngredients(uniqueIngredients);
+    console.log(uniqueIngredients);
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (allIngredients.length > 0) {
+      updateIngredientCart(allIngredients); // Update the context variable with the new ingredients
+    }
+  }, [allIngredients, updateIngredientCart]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://cuisines-bucket.s3.ap-south-1.amazonaws.com/cuisines-final.csv');
+        const response = await fetch(
+          "https://cuisines-bucket.s3.ap-south-1.amazonaws.com/cuisines-final.csv",
+        );
         const reader = response.body.getReader();
         const result = await reader.read();
-        const decoder = new TextDecoder('utf-8');
+        const decoder = new TextDecoder("utf-8");
         const csv = decoder.decode(result.value);
         const results = Papa.parse(csv, { header: true });
         setData(results.data);
@@ -38,10 +85,12 @@ const CardComponent = () => {
   useEffect(() => {
     const fetchIngredients = async () => {
       try {
-        const response = await fetch('https://cuisines-bucket.s3.ap-south-1.amazonaws.com/pantryingredients.csv');
+        const response = await fetch(
+          "https://cuisines-bucket.s3.ap-south-1.amazonaws.com/pantryingredients.csv",
+        );
         const reader = response.body.getReader();
         const result = await reader.read();
-        const decoder = new TextDecoder('utf-8');
+        const decoder = new TextDecoder("utf-8");
         const csv = decoder.decode(result.value);
         const results = Papa.parse(csv, { header: true });
         setIngredientsData(results.data);
@@ -54,56 +103,81 @@ const CardComponent = () => {
   }, []);
 
   useEffect(() => {
-    const results = data.filter(item =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const results = data.filter((item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
     setFilteredData(results);
   }, [searchTerm, data]);
 
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) return text;
-    return text.substr(0, maxLength) + '...';
+    return text.substr(0, maxLength) + "...";
   };
 
   const addToCart = (item) => {
-    const dishIngredients = ingredientsData.filter(ingredient => ingredient.dish === item.name);
+    const dishIngredients = ingredientsData.filter(
+      (ingredient) => ingredient.dish === item.name,
+    );
 
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(cartItem => cartItem.name === item.name);
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find(
+        (cartItem) => cartItem.name === item.name,
+      );
+      let updatedCart;
       if (existingItem) {
-        return prevItems.map(cartItem =>
+        updatedCart = prevItems.map((cartItem) =>
           cartItem.name === item.name
-            ? { ...cartItem, quantity: cartItem.quantity + 1, ingredients: dishIngredients }
-            : cartItem
+            ? {
+                ...cartItem,
+                quantity: cartItem.quantity + 1,
+                ingredients: dishIngredients,
+              }
+            : cartItem,
         );
       } else {
-        return [...prevItems, { ...item, quantity: 1, ingredients: dishIngredients }];
+        updatedCart = [
+          ...prevItems,
+          { ...item, quantity: 1, ingredients: dishIngredients },
+        ];
       }
+      updateRecipeCart(updatedCart);
+      return updatedCart;
     });
   };
 
   const incrementQuantity = (item) => {
-    setCartItems(prevItems =>
-      prevItems.map(cartItem =>
+    setCartItems((prevItems) => {
+      const updatedCart = prevItems.map((cartItem) =>
         cartItem.name === item.name
           ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      )
-    );
+          : cartItem,
+      );
+      updateRecipeCart(updatedCart);
+      return updatedCart;
+    });
   };
 
   const decrementQuantity = (item) => {
-    setCartItems(prevItems =>
-      prevItems.map(cartItem =>
-        cartItem.name === item.name
-          ? { ...cartItem, quantity: cartItem.quantity > 1 ? cartItem.quantity - 1 : 0 }
-          : cartItem
-      ).filter(cartItem => cartItem.quantity > 0) // Remove items with quantity 0
-    );
+    setCartItems((prevItems) => {
+      const updatedCart = prevItems
+        .map((cartItem) =>
+          cartItem.name === item.name
+            ? {
+                ...cartItem,
+                quantity: cartItem.quantity > 1 ? cartItem.quantity - 1 : 0,
+              }
+            : cartItem,
+        )
+        .filter((cartItem) => cartItem.quantity > 0); // Remove items with quantity 0
+      updateRecipeCart(updatedCart);
+      return updatedCart;
+    });
   };
 
   const calculateSubtotal = () => {
-    return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
+    return cartItems
+      .reduce((acc, item) => acc + item.price * item.quantity, 0)
+      .toFixed(2);
   };
 
   const handleReadMoreToggle = (index) => {
@@ -127,6 +201,8 @@ const CardComponent = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  console.log("Current allIngredients:", allIngredients); // Log the current allIngredients
+
   return (
     <Container fluid>
       <Row className="mb-4">
@@ -143,18 +219,22 @@ const CardComponent = () => {
                 </div>
                 <ul className="cart-item-ingredients">
                   {item.ingredients.map((ingredient, i) => (
-                    <li key={i}>{ingredient.name}: {ingredient.quantity}</li>
+                    <li key={i}>
+                      {ingredient.name}: {ingredient.quantity}
+                    </li>
                   ))}
                 </ul>
               </div>
             ))}
             <div className="cart-total">
               <p>Subtotal: ${calculateSubtotal()}</p>
-              <Button className="proceed-to-checkout">Proceed to Checkout</Button>
+              <Button className="proceed-to-checkout">
+                Proceed to Checkout
+              </Button>
             </div>
           </div>
         </Col>
-        <Col md={9} className={modalContent ? 'blur-background' : ''}>
+        <Col md={9} className={modalContent ? "blur-background" : ""}>
           <Form.Control
             type="text"
             placeholder="Search recipes..."
@@ -162,11 +242,16 @@ const CardComponent = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="mb-4 m-3"
           />
-          {filteredData.map((item, index) => (
+          {cuisinesData.map((item, index) => (
             <Card className="custom-card mb-3" key={index}>
               <Row noGutters>
                 <Col md={4}>
-                  <Card.Img variant="top" src={item.image_url} alt="Card image" className="card-image" />
+                  <Card.Img
+                    variant="top"
+                    src={item.image_url}
+                    alt="Card image"
+                    className="card-image"
+                  />
                 </Col>
                 <Col md={8}>
                   <Card.Body className="card-body">
@@ -186,15 +271,35 @@ const CardComponent = () => {
                       )}
                     </Card.Subtitle>
                     <div className="badge-container">
-                      <Badge pill variant="primary" className="mr-2">{item.cuisine}</Badge>
-                      <Badge pill variant="secondary" className="mr-2">{item.course}</Badge>
-                      <Badge pill variant="success" className="mr-2">{item.diet}</Badge>
-                      <Badge pill variant="danger" className="mr-2">{item.prep_time}</Badge>
+                      <Badge pill variant="primary" className="mr-2">
+                        {item.cuisine}
+                      </Badge>
+                      <Badge pill variant="secondary" className="mr-2">
+                        {item.course}
+                      </Badge>
+                      <Badge pill variant="success" className="mr-2">
+                        {item.diet}
+                      </Badge>
+                      <Badge pill variant="danger" className="mr-2">
+                        {item.prep_time}
+                      </Badge>
                     </div>
                     <div className="button-container mt-3">
-                      <Button variant="primary" onClick={() => addToCart(item)}>Add to Cart</Button>
-                      <Button variant="secondary" onClick={() => handleViewRecipe(item, 'instructions')}>View Recipe</Button>
-                      <Button variant="secondary" onClick={() => handleViewRecipe(item, 'ingredients')}>View Ingredients</Button>
+                      <Button variant="primary" onClick={() => addToCart(item)}>
+                        Add to Cart
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleViewRecipe(item, "instructions")}
+                      >
+                        View Recipe
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleViewRecipe(item, "ingredients")}
+                      >
+                        View Ingredients
+                      </Button>
                     </div>
                   </Card.Body>
                 </Col>
@@ -206,9 +311,15 @@ const CardComponent = () => {
       {modalContent && (
         <div className="modal" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-modal" onClick={closeModal}>&times;</button>
+            <button className="close-modal" onClick={closeModal}>
+              &times;
+            </button>
             <h2>{modalContent.name}</h2>
-            <p>{modalContent.type === 'instructions' ? modalContent.instructions : modalContent.ingredients}</p>
+            <p>
+              {modalContent.type === "instructions"
+                ? modalContent.instructions
+                : modalContent.ingredients}
+            </p>
           </div>
         </div>
       )}
@@ -217,10 +328,3 @@ const CardComponent = () => {
 };
 
 export default CardComponent;
-
-
-
-
-
-
-

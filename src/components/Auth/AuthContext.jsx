@@ -5,6 +5,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [recipeCart, setRecipeCart] = useState([]);
+  const [ingredientCart, setIngredientCart] = useState([]);
 
   useEffect(() => {
     // Retrieve stored authentication state and user details from localStorage
@@ -15,7 +17,30 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUser(JSON.parse(storedUser));
     }
+
+    // Retrieve stored carts from localStorage
+    const storedRecipeCart = localStorage.getItem("recipeCart");
+    const storedIngredientCart = localStorage.getItem("ingredientCart");
+
+    if (storedRecipeCart) {
+      setRecipeCart(JSON.parse(storedRecipeCart));
+    }
+    if (storedIngredientCart) {
+      setIngredientCart(JSON.parse(storedIngredientCart));
+    }
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem("recipeCart", JSON.stringify(recipeCart));
+    }
+  }, [recipeCart, isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem("ingredientCart", JSON.stringify(ingredientCart));
+    }
+  }, [ingredientCart, isAuthenticated]);
 
   const login = (userDetails) => {
     console.log("Login function called with:", userDetails);
@@ -35,10 +60,35 @@ export const AuthProvider = ({ children }) => {
     // Remove authentication state and user details from localStorage
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("user");
+
+    // Clear carts
+    setRecipeCart([]);
+    setIngredientCart([]);
+    localStorage.removeItem("recipeCart");
+    localStorage.removeItem("ingredientCart");
+  };
+
+  const updateRecipeCart = (items) => {
+    setRecipeCart(items);
+  };
+
+  const updateIngredientCart = (items) => {
+    setIngredientCart(items);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        login,
+        logout,
+        recipeCart,
+        ingredientCart,
+        updateRecipeCart,
+        updateIngredientCart,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

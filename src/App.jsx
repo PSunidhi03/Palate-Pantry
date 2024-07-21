@@ -10,6 +10,7 @@ import { AuthProvider } from "./components/Auth/AuthContext";
 import CardComponent from "./components/Recipe/DataFetch";
 import AboutUs from "./components/Utility/AboutusPage/Aboutus";
 import PantryPage from "./components/pantrypage/pantry";
+import Pantry from "./components/Recipe/pantry";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
     // <CardComponent/>
     // <AboutUs/>
     // <PantryPage/>
+    // <AuthProvider>
+    //   <Pantry />
+    // </AuthProvider>
   );
 }
 
