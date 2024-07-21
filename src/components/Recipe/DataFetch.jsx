@@ -12,10 +12,9 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/Card.css";
 import { useAuth } from "../Auth/AuthContext";
-import { useFetchCsvData } from "../CsvData/CsvDataContex";
+import { useNavigate, Link } from "react-router-dom";
 
 const CardComponent = () => {
-  const { cuisinesData, pantryIngredientsData } = useFetchCsvData();
   const [data, setData] = useState([]);
   const [ingredientsData, setIngredientsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -27,9 +26,9 @@ const CardComponent = () => {
   const [cartItems, setCartItems] = useState([]);
   const [modalContent, setModalContent] = useState(null);
   const [allIngredients, setAllIngredients] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Sync cartItems with recipeCart from AuthContext
     setCartItems(recipeCart);
   }, [recipeCart]);
 
@@ -71,7 +70,7 @@ const CardComponent = () => {
         const csv = decoder.decode(result.value);
         const results = Papa.parse(csv, { header: true });
         setData(results.data);
-        setFilteredData(results.data);
+        setFilteredData(results.data); // Initialize filteredData with fetched data
         setLoading(false);
       } catch (err) {
         setError(err);
@@ -103,10 +102,14 @@ const CardComponent = () => {
   }, []);
 
   useEffect(() => {
-    const results = data.filter((item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-    setFilteredData(results);
+    if (searchTerm === "") {
+      setFilteredData(data); // Show all data if searchTerm is empty
+    } else {
+      const results = data.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+      setFilteredData(results);
+    }
   }, [searchTerm, data]);
 
   const truncateText = (text, maxLength) => {
@@ -201,8 +204,6 @@ const CardComponent = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  console.log("Current allIngredients:", allIngredients); // Log the current allIngredients
-
   return (
     <Container fluid>
       <Row className="mb-4">
@@ -228,9 +229,11 @@ const CardComponent = () => {
             ))}
             <div className="cart-total">
               <p>Subtotal: ${calculateSubtotal()}</p>
-              <Button className="proceed-to-checkout">
-                Proceed to Checkout
-              </Button>
+              <Link to="/final-cart">
+                <Button className="proceed-to-checkout">
+                  Proceed to Checkout
+                </Button>
+              </Link>
             </div>
           </div>
         </Col>
@@ -242,7 +245,7 @@ const CardComponent = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="mb-4 m-3"
           />
-          {cuisinesData.map((item, index) => (
+          {filteredData.map((item, index) => (
             <Card className="custom-card mb-3" key={index}>
               <Row noGutters>
                 <Col md={4}>

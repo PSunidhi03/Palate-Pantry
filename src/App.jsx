@@ -11,6 +11,7 @@ import CardComponent from "./components/Recipe/DataFetch";
 import AboutUs from "./components/Utility/AboutusPage/Aboutus";
 import PantryPage from "./components/pantrypage/pantry";
 import Pantry from "./components/Recipe/pantry";
+import CartWithRecipe from "./components/Recipe/finalcart";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/recipe" element={<CardComponent />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
+          <Route path="/final-cart" element={<CartWithRecipe />} />
+          <Route path="/pantry" element={<Pantry />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </Router>
@@ -29,9 +32,6 @@ function App() {
     // <CardComponent/>
     // <AboutUs/>
     // <PantryPage/>
-    // <AuthProvider>
-    //   <Pantry />
-    // </AuthProvider>
   );
 }
 
