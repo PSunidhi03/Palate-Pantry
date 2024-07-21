@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
-import '../../styles/userdashboard.css';
-import { toast,ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import Header from '../Utility/Header';
+import React, { useState } from "react";
+import "../../styles/userdashboard.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import Header from "../Utility/Header";
+import { useAuth } from "../Auth/AuthContext";
+import axios from "axios";
 
 // toast.configure();
 
 const UserDashboard = () => {
-  const [activeSection, setActiveSection] = useState('dashboard');
-  const [userName, setUserName] = useState('Samantha');
-  const [userAge, setUserAge] = useState('');
-  const [allergens, setAllergens] = useState('');
-  const [familyMembers, setFamilyMembers] = useState([{ name: '', age: '', allergens: '' }]);
-  const [budgetType, setBudgetType] = useState('weekly');
-  const [budgetAmount, setBudgetAmount] = useState('');
+  const [activeSection, setActiveSection] = useState("dashboard");
+  const [userName, setUserName] = useState("Samantha");
+  const [userAge, setUserAge] = useState("");
+  const [allergens, setAllergens] = useState("");
+  const [familyMembers, setFamilyMembers] = useState([
+    { name: "", age: "", allergens: "" },
+  ]);
+  const [budgetType, setBudgetType] = useState("weekly");
+  const [budgetAmount, setBudgetAmount] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [expenses, setExpenses] = useState([]);
   const [orders, setOrders] = useState([]);
   const [isEditingUser, setIsEditingUser] = useState(false);
-  const [isEditingFamily, setIsEditingFamily] = useState(new Array(familyMembers.length).fill(false));
+  const [isEditingFamily, setIsEditingFamily] = useState(
+    new Array(familyMembers.length).fill(false),
+  );
+  const { isAuthenticated, user } = useAuth();
 
   const handleFamilyMemberChange = (index, field, value) => {
     const newFamilyMembers = [...familyMembers];
@@ -30,19 +37,19 @@ const UserDashboard = () => {
   };
 
   const addFamilyMember = () => {
-    setFamilyMembers([...familyMembers, { name: '', age: '', allergens: '' }]);
+    setFamilyMembers([...familyMembers, { name: "", age: "", allergens: "" }]);
     setIsEditingFamily([...isEditingFamily, true]);
   };
 
   const handleSave = () => {
     if (!userName.trim()) {
-      toast.error('Name is required for the user');
+      toast.error("Name is required for the user");
       return;
     }
 
     for (const member of familyMembers) {
       if (!member.name.trim()) {
-        toast.error('Name is required for all family members');
+        toast.error("Name is required for all family members");
         return;
       }
     }
@@ -62,7 +69,7 @@ const UserDashboard = () => {
     console.log(userData);
     setIsEditingUser(false);
     setIsEditingFamily(new Array(familyMembers.length).fill(false));
-    toast.success('Changes saved successfully');
+    toast.success("Changes saved successfully");
   };
 
   const handleEditUser = () => {
@@ -76,25 +83,52 @@ const UserDashboard = () => {
   };
 
   const handleDeleteUser = () => {
-    setUserName('');
-    setUserAge('');
-    setAllergens('');
-    toast.success('User deleted successfully');
+    setUserName("");
+    setUserAge("");
+    setAllergens("");
+    toast.success("User deleted successfully");
   };
 
   const handleDeleteFamilyMember = (index) => {
     const newFamilyMembers = [...familyMembers];
     newFamilyMembers.splice(index, 1);
     setFamilyMembers(newFamilyMembers);
-    toast.success('Family member deleted successfully');
+    toast.success("Family member deleted successfully");
+  };
+
+  const handleBudget = async () => {
+    try {
+      const data = {
+        user_id: String(user.userid),
+        period: budgetType,
+        start_date: startDate,
+        end_date: endDate,
+        allocated_amount: budgetAmount,
+        spent_amount: 0,
+      };
+      console.log(data);
+      const response = await axios.post(
+        "http://localhost:3000/api/budget",
+        data,
+      );
+      console.log("Budget added successfully", response.data);
+      toast.success("Budget added successfully");
+      // setLoading(false); // Set loading to false on success
+      // Handle success, e.g., redirect or show a success message
+    } catch (error) {
+      console.error("Budget add failed", error);
+      toast.error("Budget add failed");
+      // setLoading(false); // Set loading to false on failure
+      // Handle error, e.g., show an error message
+    }
   };
 
   const calculateDates = () => {
     let newStartDate = new Date();
     let newEndDate = new Date();
-    if (budgetType === 'weekly') {
+    if (budgetType === "weekly") {
       newEndDate.setDate(newStartDate.getDate() + 6);
-    } else if (budgetType === 'monthly') {
+    } else if (budgetType === "monthly") {
       newEndDate.setMonth(newStartDate.getMonth() + 1);
       newEndDate.setDate(newStartDate.getDate() - 1);
     }
@@ -104,7 +138,7 @@ const UserDashboard = () => {
 
   const renderDashboard = () => (
     <div>
-        <ToastContainer/>
+      <ToastContainer />
       <h1 className="header">User Dashboard</h1>
       {isEditingUser ? (
         <div className="form-container">
@@ -136,15 +170,21 @@ const UserDashboard = () => {
               onChange={(e) => setAllergens(e.target.value)}
             />
           </div>
-          <button className="saveButton" onClick={handleSave}>Save</button>
-          <button className="deleteButton" onClick={handleDeleteUser}>Delete</button>
+          <button className="saveButton" onClick={handleSave}>
+            Save
+          </button>
+          <button className="deleteButton" onClick={handleDeleteUser}>
+            Delete
+          </button>
         </div>
       ) : (
         <div className="card">
           <h2>{userName}</h2>
           <p>Age: {userAge}</p>
           <p>Allergens: {allergens}</p>
-          <button className="editButton" onClick={handleEditUser}>Edit</button>
+          <button className="editButton" onClick={handleEditUser}>
+            Edit
+          </button>
         </div>
       )}
     </div>
@@ -160,8 +200,11 @@ const UserDashboard = () => {
             <input
               type="radio"
               value="weekly"
-              checked={budgetType === 'weekly'}
-              onChange={() => { setBudgetType('weekly'); calculateDates(); }}
+              checked={budgetType === "weekly"}
+              onChange={() => {
+                setBudgetType("weekly");
+                calculateDates();
+              }}
             />
             Weekly
           </label>
@@ -169,33 +212,38 @@ const UserDashboard = () => {
             <input
               type="radio"
               value="monthly"
-              checked={budgetType === 'monthly'}
-              onChange={() => { setBudgetType('monthly'); calculateDates(); }}
+              checked={budgetType === "monthly"}
+              onChange={() => {
+                setBudgetType("monthly");
+                calculateDates();
+              }}
             />
             Monthly
           </label>
         </div>
         <label className="label">Budget Range:</label>
-        <select className="input" value={budgetAmount} onChange={(e) => setBudgetAmount(e.target.value)}>
+        <select
+          className="input"
+          value={budgetAmount}
+          onChange={(e) => setBudgetAmount(e.target.value)}
+        >
           <option value="">Select a range</option>
-          <option value="100-500">$100 - $500</option>
-          <option value="500-1000">$500 - $1000</option>
-          <option value="1000-2000">$1000 - $2000</option>
+          <option value="2000">2000</option>
+          <option value="5000">5000</option>
+          <option value="10000">10000</option>
         </select>
       </div>
       <h2 className="header">Budget Period</h2>
       <p>Start Date: {startDate.toDateString()}</p>
       <p>End Date: {endDate.toDateString()}</p>
-      <Calendar
-        value={startDate}
-        onChange={date => setStartDate(date)}
-      />
+      <Calendar value={startDate} onChange={(date) => setStartDate(date)} />
       <h2 className="header">Previous Expenses</h2>
       <ul>
         {expenses.map((expense, index) => (
           <li key={index}>{expense}</li>
         ))}
       </ul>
+      <button onClick={handleBudget}>Submit</button>
     </div>
   );
 
@@ -212,7 +260,9 @@ const UserDashboard = () => {
                   type="text"
                   className="input"
                   value={member.name}
-                  onChange={(e) => handleFamilyMemberChange(index, 'name', e.target.value)}
+                  onChange={(e) =>
+                    handleFamilyMemberChange(index, "name", e.target.value)
+                  }
                   required
                 />
               </div>
@@ -222,7 +272,9 @@ const UserDashboard = () => {
                   type="number"
                   className="input"
                   value={member.age}
-                  onChange={(e) => handleFamilyMemberChange(index, 'age', e.target.value)}
+                  onChange={(e) =>
+                    handleFamilyMemberChange(index, "age", e.target.value)
+                  }
                 />
               </div>
               <div className="formGroup">
@@ -231,23 +283,39 @@ const UserDashboard = () => {
                   type="text"
                   className="input"
                   value={member.allergens}
-                  onChange={(e) => handleFamilyMemberChange(index, 'allergens', e.target.value)}
+                  onChange={(e) =>
+                    handleFamilyMemberChange(index, "allergens", e.target.value)
+                  }
                 />
               </div>
-              <button className="saveButton" onClick={handleSave}>Save</button>
-              <button className="deleteButton" onClick={() => handleDeleteFamilyMember(index)}>Delete</button>
+              <button className="saveButton" onClick={handleSave}>
+                Save
+              </button>
+              <button
+                className="deleteButton"
+                onClick={() => handleDeleteFamilyMember(index)}
+              >
+                Delete
+              </button>
             </div>
           ) : (
             <div>
               <h2>{member.name}</h2>
               <p>Age: {member.age}</p>
               <p>Allergens: {member.allergens}</p>
-              <button className="editButton" onClick={() => handleEditFamily(index)}>Edit</button>
+              <button
+                className="editButton"
+                onClick={() => handleEditFamily(index)}
+              >
+                Edit
+              </button>
             </div>
           )}
         </div>
       ))}
-      <button className="addButton" onClick={addFamilyMember}>Add Family Member</button>
+      <button className="addButton" onClick={addFamilyMember}>
+        Add Family Member
+      </button>
     </div>
   );
 
@@ -266,45 +334,83 @@ const UserDashboard = () => {
   const renderMealPlan = () => (
     <div>
       <h1 className="header">Plan Meals</h1>
-      <p>Feature to plan meals for a week or a month will be implemented here.</p>
+      <p>
+        Feature to plan meals for a week or a month will be implemented here.
+      </p>
     </div>
   );
 
   return (
     <>
-    <Header/>
-    <ToastContainer/>
-    <div className="dashboard-container">
-      <div className="sidebar">
-        <div className="profile">
-          <img src="/src/assets/user-profile-filled-svgrepo-com.svg" alt="Profile" className="profile-img"/>
-          <h2>User</h2>
-          <p>User@email.com</p>
+      <Header />
+      <ToastContainer />
+      <div className="dashboard-container">
+        <div className="sidebar">
+          <div className="profile">
+            <img
+              src="/src/assets/user-profile-filled-svgrepo-com.svg"
+              alt="Profile"
+              className="profile-img"
+            />
+            <h2>User</h2>
+            <p>User@email.com</p>
+          </div>
+          <nav className="nav-menu">
+            <a
+              href="#dashboard"
+              className="nav-item"
+              onClick={() => setActiveSection("dashboard")}
+            >
+              Dashboard
+            </a>
+            <a
+              href="#budget"
+              className="nav-item"
+              onClick={() => setActiveSection("budget")}
+            >
+              Budget
+            </a>
+            <a
+              href="#family"
+              className="nav-item"
+              onClick={() => setActiveSection("family")}
+            >
+              Family
+            </a>
+            <a
+              href="#orders"
+              className="nav-item"
+              onClick={() => setActiveSection("orders")}
+            >
+              View Orders
+            </a>
+            <a
+              href="#mealplan"
+              className="nav-item"
+              onClick={() => setActiveSection("mealplan")}
+            >
+              Plan Meals
+            </a>
+            <a
+              href="#settings"
+              className="nav-item"
+              onClick={() => setActiveSection("settings")}
+            >
+              Settings
+            </a>
+          </nav>
         </div>
-        <nav className="nav-menu">
-          <a href="#dashboard" className="nav-item" onClick={() => setActiveSection('dashboard')}>Dashboard</a>
-          <a href="#budget" className="nav-item" onClick={() => setActiveSection('budget')}>Budget</a>
-          <a href="#family" className="nav-item" onClick={() => setActiveSection('family')}>Family</a>
-          <a href="#orders" className="nav-item" onClick={() => setActiveSection('orders')}>View Orders</a>
-          <a href="#mealplan" className="nav-item" onClick={() => setActiveSection('mealplan')}>Plan Meals</a>
-          <a href="#settings" className="nav-item" onClick={() => setActiveSection('settings')}>Settings</a>
-        </nav>
+        <div className="content">
+          {activeSection === "dashboard" && renderDashboard()}
+          {activeSection === "budget" && renderBudget()}
+          {activeSection === "family" && renderFamily()}
+          {activeSection === "orders" && renderOrders()}
+          {activeSection === "mealplan" && renderMealPlan()}
+          {activeSection === "settings" && <h1 className="header">Settings</h1>}
+        </div>
       </div>
-      <div className="content">
-        {activeSection === 'dashboard' && renderDashboard()}
-        {activeSection === 'budget' && renderBudget()}
-        {activeSection === 'family' && renderFamily()}
-        {activeSection === 'orders' && renderOrders()}
-        {activeSection === 'mealplan' && renderMealPlan()}
-        {activeSection === 'settings' && <h1 className="header">Settings</h1>}
-      </div>
-    </div>
     </>
   );
 };
 
 export default UserDashboard;
-
-
-
-

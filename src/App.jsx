@@ -13,21 +13,21 @@ import PantryPage from "./components/pantrypage/pantry";
 
 function App() {
   return (
-    // <AuthProvider>
-    //   <Router>
-    //     <Routes>
-    //       <Route path="/signin" element={<SignIn />} />
-    //       <Route path="/signup" element={<SignUp />} />
-    //       <Route path="/home" element={<Home />} />
-    //       <Route path="/recipe" element={<Recipe />} />
-    //       <Route path="/user-dashboard" element={<UserDashboard />} />
-    //       <Route path="/" element={<Home />} />
-    //     </Routes>
-    //   </Router>
-    // </AuthProvider>
-      // <CardComponent/>
-      // <AboutUs/>
-      <PantryPage/>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/recipe" element={<Recipe />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+    // <CardComponent/>
+    // <AboutUs/>
+    // <PantryPage/>
   );
 }
 
