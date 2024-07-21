@@ -17,7 +17,7 @@ const CardComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://cuisines-bucket.s3.ap-south-1.amazonaws.com/cuisines.csv');
+        const response = await fetch('https://cuisines-bucket.s3.ap-south-1.amazonaws.com/cuisines-final.csv');
         const reader = response.body.getReader();
         const result = await reader.read();
         const decoder = new TextDecoder('utf-8');
