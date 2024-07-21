@@ -19,7 +19,7 @@ const UserDashboard = () => {
     { name: "", age: "", allergens: "" },
   ]);
   const [budgetType, setBudgetType] = useState("weekly");
-  const [budgetAmount, setBudgetAmount] = useState("");
+  const [budgetAmount, setBudgetAmount] = useState("1000");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [expenses, setExpenses] = useState([]);
@@ -221,7 +221,7 @@ const UserDashboard = () => {
             Monthly
           </label>
         </div>
-        <label className="label">Budget Range:</label>
+        <label className="label">Budget Amount:</label>
         <select
           className="input"
           value={budgetAmount}

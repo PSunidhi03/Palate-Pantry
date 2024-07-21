@@ -36,6 +36,10 @@ const CardComponent = () => {
   }, [recipeCart]);
 
   useEffect(() => {
+    updateIngredientCart(allIngredients);
+  }, [allIngredients]);
+
+  useEffect(() => {
     const processIngredients = (ingredientString) => {
       const cleanedString = ingredientString.replace(/\t/g, "").trim();
       return cleanedString
@@ -52,7 +56,6 @@ const CardComponent = () => {
 
     const uniqueIngredients = Array.from(ingredientSet);
     setAllIngredients(uniqueIngredients);
-    console.log(uniqueIngredients);
   }, [cartItems]);
 
   useEffect(() => {
@@ -205,6 +208,7 @@ const CardComponent = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  console.log("Current IngredientCart:", ingredientCart); // Log the current allIngredients
   console.log("Current allIngredients:", allIngredients); // Log the current allIngredients
   console.log("Current Pantry ingredients: ", ingredientsData);
 
