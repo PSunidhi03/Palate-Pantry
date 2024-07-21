@@ -247,11 +247,28 @@ const CardComponent = () => {
               <p>No ingredients in cart.</p>
             ) : (
               <ul>
-                {ingredientCart.map((ingredient) => (
-                  <li>{ingredient}</li>
-                ))}
+                {ingredientCart.map((ingredientName, index) => {
+                  const ingredient = ingredientsData.find(
+                    (item) => item.Item === ingredientName,
+                  );
+                  return (
+                    ingredient && (
+                      <li key={index}>
+                        <img
+                          src={ingredient.image_url}
+                          alt={ingredient.Item}
+                          style={{ width: "50px", height: "50px" }}
+                        />
+                        {ingredient.Item}: {ingredient.Price} ({ingredient.quantity})
+                      </li>
+                    )
+                  );
+                })}
               </ul>
             )}
+            <div className="cart-total">
+              <p>Subtotal: ${calculateIngredientSubtotal()}</p>
+            </div>
           </div>
         </Col>
       </Row>
