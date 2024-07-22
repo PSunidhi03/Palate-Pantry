@@ -10,7 +10,7 @@ import {
   Form,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../../styles/Card.css";
+import "../../styles/finalcart.css"
 import { useAuth } from "../Auth/AuthContext";
 import { useFetchCsvData } from "../CsvData/CsvDataContex";
 import { useNavigate, Link } from "react-router-dom";
@@ -269,7 +269,7 @@ const CardComponent = () => {
             {cartItems.map((item, index) => (
               <div className="cart-item" key={index}>
                 <span className="cart-item-name">{item.name}</span>
-                <div className="cart-item-controls">
+                <div className="cart-item-controls buttons">
                   <button onClick={() => decrementQuantity(item)}>-</button>
                   <span>{item.quantity}</span>
                   <button onClick={() => incrementQuantity(item)}>+</button>
