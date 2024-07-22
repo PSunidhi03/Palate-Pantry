@@ -2,10 +2,11 @@ import React from 'react'
 import Mansalva from 'react-google-fonts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/header.css'
+import { useAuth } from '../Auth/AuthContext';
 
 function Header() {
-  return (
-     <header className="header-container">
+  const [isAuthenticated, user] = useAuth();
+  return ( <header className="header-container">
       <div className="container">
         <div className="header-content row align-items-center">
           <div className="logo col-6 col-md-3 d-flex align-items-center">

@@ -130,7 +130,9 @@
     overflow-y: auto; /* Allow scrolling within the cart section */
 }
 
-
+.ingredient-cart{
+    position: sticky;
+}
 
 
 

@@ -28,6 +28,12 @@ const CardComponent = () => {
   const [cartItems, setCartItems] = useState([]);
   const [modalContent, setModalContent] = useState(null);
   const [allIngredients, setAllIngredients] = useState([]);
+  const [ingredientQuantities, setIngredientQuantities] = useState(
+    ingredientCart.reduce((acc, ingredientName) => {
+      acc[ingredientName] = 1; // Initial quantity
+      return acc;
+    }, {}),
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -180,12 +186,6 @@ const CardComponent = () => {
       return updatedCart;
     });
   };
-  const [ingredientQuantities, setIngredientQuantities] = useState(
-    ingredientCart.reduce((acc, ingredientName) => {
-      acc[ingredientName] = 1; // Initial quantity
-      return acc;
-    }, {}),
-  );
 
   const incrementIQuantity = (ingredientName) => {
     setIngredientQuantities((prevQuantities) => ({
@@ -297,7 +297,7 @@ const CardComponent = () => {
           <div>
             <h1>Budget</h1>
               <h4>Current budget: {user.currentBudget.allocatedAmount}({user.currentBudget.period})</h4>
-              <h4>Spend Amount: {user.currentBudget.spentAmount}</h4>
+              <h4>Spent Amount: {user.currentBudget.spentAmount}</h4>
               <h4>Remaining: {user.currentBudget.allocatedAmount - user.currentBudget.spentAmount}</h4>
           </div>
         </Col>
