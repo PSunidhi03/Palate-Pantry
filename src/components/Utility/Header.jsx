@@ -21,7 +21,6 @@ function Header() {
             <a href="/pantry" className="header-link">Pantry</a>
             <a href="/final-cart" className="header-link">My Cart</a>
             <a href="/user-dashboard" className="header-link">User Dashboard</a>
-            <a href="/final-cart" className="header-link">My Cart</a>
           </nav>
           <div className="login-signup col-6 col-md-3 d-flex justify-content-end">
             {isAuthenticated ? (

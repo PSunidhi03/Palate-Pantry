@@ -352,8 +352,8 @@ const UserDashboard = () => {
               alt="Profile"
               className="profile-img"
             />
-            <h2>User</h2>
-            <p>User@email.com</p>
+            <h2>Sonu</h2>
+            <p>Sonu@gmail.com</p>
           </div>
           <nav className="nav-menu">
             <a
