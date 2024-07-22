@@ -13,6 +13,8 @@ import PantryPage from "./components/pantrypage/pantry";
 import Pantry from "./components/Recipe/pantry";
 import CartWithRecipe from "./components/Recipe/finalcart";
 import HomePage from "./components/HomePage/Home";
+import PaymentPage from "./components/Payment/PaymentPage";
+import PaymentSuccess from "./components/Payment/PaymentSuccess";
 
 function App() {
   return (
@@ -27,7 +29,10 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/final-cart" element={<CartWithRecipe />} />
           <Route path="/pantry" element={<Pantry />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/" element={<Home />} />
+          
         </Routes>
       </Router>
     </AuthProvider>

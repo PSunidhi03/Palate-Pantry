@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
   const [ingredientCart, setIngredientCart] = useState([]);
 
   useEffect(() => {
-    // Retrieve stored authentication state and user details from localStorage
     const storedAuth = localStorage.getItem("isAuthenticated");
     const storedUser = localStorage.getItem("user");
 
@@ -18,7 +17,6 @@ export const AuthProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
     }
 
-    // Retrieve stored carts from localStorage
     const storedRecipeCart = localStorage.getItem("recipeCart");
     const storedIngredientCart = localStorage.getItem("ingredientCart");
 
@@ -43,25 +41,17 @@ export const AuthProvider = ({ children }) => {
   }, [ingredientCart, isAuthenticated]);
 
   const login = (userDetails) => {
-    console.log("Login function called with:", userDetails);
     setIsAuthenticated(true);
     setUser(userDetails);
-
-    // Save authentication state and user details to localStorage
     localStorage.setItem("isAuthenticated", "true");
     localStorage.setItem("user", JSON.stringify(userDetails));
   };
 
   const logout = () => {
-    console.log("Logout function called");
     setIsAuthenticated(false);
     setUser(null);
-
-    // Remove authentication state and user details from localStorage
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("user");
-
-    // Clear carts
     setRecipeCart([]);
     setIngredientCart([]);
     localStorage.removeItem("recipeCart");
@@ -76,6 +66,17 @@ export const AuthProvider = ({ children }) => {
     setIngredientCart(items);
   };
 
+  const updateUserBudget = (budget) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      currentBudget: budget,
+    }));
+    localStorage.setItem("user", JSON.stringify({
+      ...user,
+      currentBudget: budget,
+    }));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -87,6 +88,7 @@ export const AuthProvider = ({ children }) => {
         ingredientCart,
         updateRecipeCart,
         updateIngredientCart,
+        updateUserBudget,
       }}
     >
       {children}

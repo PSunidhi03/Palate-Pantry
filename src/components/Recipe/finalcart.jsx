@@ -23,7 +23,7 @@ const CardComponent = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const { recipeCart, ingredientCart, updateRecipeCart, updateIngredientCart } =
+  const {user, recipeCart, ingredientCart, updateRecipeCart, updateIngredientCart } =
     useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [modalContent, setModalContent] = useState(null);
@@ -180,56 +180,59 @@ const CardComponent = () => {
       return updatedCart;
     });
   };
-const [ingredientQuantities, setIngredientQuantities] = useState(
-  ingredientCart.reduce((acc, ingredientName) => {
-    acc[ingredientName] = 1; // Initial quantity
-    return acc;
-  }, {})
-);
+  const [ingredientQuantities, setIngredientQuantities] = useState(
+    ingredientCart.reduce((acc, ingredientName) => {
+      acc[ingredientName] = 1; // Initial quantity
+      return acc;
+    }, {}),
+  );
 
-const incrementIQuantity = (ingredientName) => {
-  setIngredientQuantities((prevQuantities) => ({
-    ...prevQuantities,
-    [ingredientName]: (prevQuantities[ingredientName] || 0) + 1,
-  }));
-};
-
-const decrementIQuantity = (ingredientName) => {
-  setIngredientQuantities((prevQuantities) => {
-    const newQuantity = Math.max((prevQuantities[ingredientName] || 1) - 1, 0);
-
-    // Remove ingredient from the cart if quantity is 0
-    if (newQuantity === 0) {
-      updateIngredientCart((prevCart) => {
-        return prevCart.filter((item) => item !== ingredientName);
-      });
-    }
-
-    // Ensure that the quantity in the state is updated properly
-    return {
+  const incrementIQuantity = (ingredientName) => {
+    setIngredientQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [ingredientName]: newQuantity,
-    };
-  });
-};
+      [ingredientName]: (prevQuantities[ingredientName] || 0) + 1,
+    }));
+  };
+
+  const decrementIQuantity = (ingredientName) => {
+    setIngredientQuantities((prevQuantities) => {
+      const newQuantity = Math.max(
+        (prevQuantities[ingredientName] || 1) - 1,
+        0,
+      );
+
+      // Remove ingredient from the cart if quantity is 0
+      if (newQuantity === 0) {
+        updateIngredientCart((prevCart) => {
+          return prevCart.filter((item) => item !== ingredientName);
+        });
+      }
+
+      // Ensure that the quantity in the state is updated properly
+      return {
+        ...prevQuantities,
+        [ingredientName]: newQuantity,
+      };
+    });
+  };
   // const calculateSubtotal = () => {
   //   return cartItems
   //     .reduce((acc, item) => acc + item.price * item.quantity, 0)
   //     .toFixed(2);
   // };
-const calculateIngredientSubtotal = () => {
-  return ingredientCart.reduce((total, ingredientName) => {
-    const ingredient = ingredientsData.find(
-      (item) =>
-        item.Item &&
-        ingredientName &&
-        item.Item.toLowerCase().includes(ingredientName.toLowerCase())
-    );
-    return ingredient
-      ? total + (ingredient.Price * (ingredientQuantities[ingredientName] || 1))
-      : total;
-  }, 0);
-};
+  const calculateIngredientSubtotal = () => {
+    return ingredientCart.reduce((total, ingredientName) => {
+      const ingredient = ingredientsData.find(
+        (item) =>
+          item.Item &&
+          ingredientName &&
+          item.Item.toLowerCase().includes(ingredientName.toLowerCase()),
+      );
+      return ingredient
+        ? total + ingredient.Price * (ingredientQuantities[ingredientName] || 1)
+        : total;
+    }, 0);
+  };
   const handleReadMoreToggle = (index) => {
     const newFilteredData = filteredData.map((item, i) => {
       if (i === index) {
@@ -251,10 +254,10 @@ const calculateIngredientSubtotal = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  console.log("Current IngredientCart:", ingredientCart); // Log the current allIngredients
-  console.log("Current allIngredients:", allIngredients); // Log the current allIngredients
-  console.log("Current Pantry ingredients: ", ingredientsData);
-
+  const handleProceedToPayment = () => {
+    const subtotal = calculateIngredientSubtotal();
+    navigate("/payment", { state: { subtotal } });
+  };
 
   return (
     <Container fluid>
@@ -282,57 +285,74 @@ const calculateIngredientSubtotal = () => {
             ))}
             <div className="cart-total">
               {/* <p>Subtotal: ${calculateSubtotal()}</p> */}
-              <Button className="proceed-to-checkout">Buy</Button>
+              <Button onClick={handleProceedToPayment}>Proceed to Payment</Button>
             </div>
           </div>
           <Link to="/recipe">
             <Button className="proceed-to-checkout">Go To Recipes</Button>
           </Link>
+          <br />
+          <br />
+          <br />
+          <div>
+            <h1>Budget</h1>
+              <h4>Current budget: {user.currentBudget.allocatedAmount}({user.currentBudget.period})</h4>
+              <h4>Spend Amount: {user.currentBudget.spentAmount}</h4>
+              <h4>Remaining: {user.currentBudget.allocatedAmount - user.currentBudget.spentAmount}</h4>
+          </div>
         </Col>
 
         {/* New column for ingredientCart */}
-<Col md={6}>
-  <div className="ingredient-cart">
-    <h4>Ingredients Cart</h4>
-    {ingredientCart.length === 0 ? (
-      <p>No ingredients in cart.</p>
-    ) : (
-      <ul>
-        {ingredientCart.map((ingredientName, index) => {
-          if (!ingredientName) return null; // Skip undefined or empty ingredient names
+        <Col md={6}>
+          <div className="ingredient-cart">
+            <h4>Ingredients Cart</h4>
+            {ingredientCart.length === 0 ? (
+              <p>No ingredients in cart.</p>
+            ) : (
+              <ul>
+                {ingredientCart.map((ingredientName, index) => {
+                  if (!ingredientName) return null; // Skip undefined or empty ingredient names
 
-          const ingredient = ingredientsData.find(
-            (item) =>
-              item.Item &&
-              ingredientName &&
-              item.Item.toLowerCase().includes(
-                ingredientName.toLowerCase()
-              )
-          );
+                  const ingredient = ingredientsData.find(
+                    (item) =>
+                      item.Item &&
+                      ingredientName &&
+                      item.Item.toLowerCase().includes(
+                        ingredientName.toLowerCase(),
+                      ),
+                  );
 
-          return (
-            ingredient && (
-              <li key={index}>
-                <img
-                  src={ingredient.image_url}
-                  alt={ingredient.Item}
-                  style={{ width: "50px", height: "50px" }}
-                />
-                {ingredient.Item}: {ingredient.Price} (
-                {ingredientQuantities[ingredientName] || 1})
-                <button onClick={() => decrementIQuantity(ingredientName)}>-</button>
-                <button onClick={() => incrementIQuantity(ingredientName)}>+</button>
-              </li>
-            )
-          );
-        })}
-      </ul>
-    )}
-    <div className="cart-total">
-      <p>Subtotal: Rs {calculateIngredientSubtotal().toFixed(2)}</p>
-    </div>
-  </div>
-</Col>
+                  return (
+                    ingredient && (
+                      <li key={index}>
+                        <img
+                          src={ingredient.image_url}
+                          alt={ingredient.Item}
+                          style={{ width: "50px", height: "50px" }}
+                        />
+                        {ingredient.Item}: {ingredient.Price} (
+                        {ingredientQuantities[ingredientName] || 1})
+                        <button
+                          onClick={() => decrementIQuantity(ingredientName)}
+                        >
+                          -
+                        </button>
+                        <button
+                          onClick={() => incrementIQuantity(ingredientName)}
+                        >
+                          +
+                        </button>
+                      </li>
+                    )
+                  );
+                })}
+              </ul>
+            )}
+            <div className="cart-total">
+              <p>Subtotal: Rs {calculateIngredientSubtotal().toFixed(2)}</p>
+            </div>
+          </div>
+        </Col>
       </Row>
       {modalContent && (
         <div className="modal" onClick={closeModal}>
