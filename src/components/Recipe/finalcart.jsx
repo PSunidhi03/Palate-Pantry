@@ -14,6 +14,7 @@ import "../../styles/finalcart.css"
 import { useAuth } from "../Auth/AuthContext";
 import { useFetchCsvData } from "../CsvData/CsvDataContex";
 import { useNavigate, Link } from "react-router-dom";
+import Header from "../Utility/Header";
 
 const CardComponent = () => {
   const { cuisinesData, pantryIngredientsData } = useFetchCsvData();
@@ -260,6 +261,8 @@ const CardComponent = () => {
   };
 
   return (
+    <>
+    <Header/>
     <Container fluid>
       <Row className="mb-4">
         {/* Existing column for cartItems */}
@@ -370,6 +373,7 @@ const CardComponent = () => {
         </div>
       )}
     </Container>
+    </>
   );
 };
 

@@ -235,10 +235,10 @@ const CardComponent = () => {
               </div>
             ))}
             <div className="cart-total">
-              <p>Subtotal: ${calculateSubtotal()}</p>
+              {/* <p>Subtotal: ${calculateSubtotal()}</p> */}
               <Link to="/final-cart">
                 <Button className="proceed-to-checkout">
-                  Proceed to Checkout
+                  Proceed to mycart
                 </Button>
               </Link>
             </div>

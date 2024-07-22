@@ -10,7 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Prevent wrapping */
 }
 
 .logo {
@@ -32,14 +32,14 @@
 
 .header-nav {
   display: flex;
-  gap: 20px;
+  gap: 10px; /* Adjust gap as needed */
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Prevent wrapping */
 }
 
 .header-link {
   color: white;
-  font-size: 1.3em;
+  font-size: 1.1em;
   text-decoration: none;
   font-family: 'Mansalva', cursive; /* Apply Mansalva font */
 }
@@ -53,10 +53,9 @@
   border: none;
   font-weight: bold;
   font-family: 'Mansalva', cursive; /* Apply Mansalva font */
-  font-size: 1.2em;
+  font-size: 1em;
   color: #F95C19;
 }
-
 
 .login-signup .btn:hover {
   background-color: #a83706; /* Slightly darker on hover */
@@ -73,5 +72,6 @@
     align-items: center;
   }
 }
+
 
 
