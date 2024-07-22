@@ -58,6 +58,9 @@
   font-family: 'Mansalva', cursive;
 }
 
+.ptag{
+  color: #2e2e2e;
+}
 .form-container {
   background-color: white;
   padding: 20px;
@@ -72,6 +75,7 @@
 .label {
   display: block;
   margin-bottom: 5px;
+  color: #2e2e2e;
 }
 
 .input {
@@ -114,7 +118,9 @@
 .addButton {
   margin-bottom: 20px;
 }
-
+.budget{
+  color: #2e2e2e;
+}
 @media (max-width: 768px) {
   .dashboard-container {
     flex-direction: column;

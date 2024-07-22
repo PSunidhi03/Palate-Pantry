@@ -12,9 +12,9 @@ import axios from "axios";
 
 const UserDashboard = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [userName, setUserName] = useState("Samantha");
-  const [userAge, setUserAge] = useState("");
-  const [allergens, setAllergens] = useState("");
+  const [userName, setUserName] = useState("Sonu");
+  const [userAge, setUserAge] = useState("20");
+  const [allergens, setAllergens] = useState("Peanuts");
   const [familyMembers, setFamilyMembers] = useState([
     { name: "", age: "", allergens: "" },
   ]);
@@ -192,12 +192,12 @@ const UserDashboard = () => {
 
   const renderBudget = () => (
     <div>
-      <h1 className="header">Budget</h1>
+      <h1 className="header budget">Budget</h1>
       <div className="formGroup">
         <label className="label">Set Budget:</label>
         <div>
-          <label>
-            <input
+          <label style={{ color: 'black' }}>
+            <input 
               type="radio"
               value="weekly"
               checked={budgetType === "weekly"}
@@ -234,8 +234,8 @@ const UserDashboard = () => {
         </select>
       </div>
       <h2 className="header">Budget Period</h2>
-      <p>Start Date: {startDate.toDateString()}</p>
-      <p>End Date: {endDate.toDateString()}</p>
+      <p className="ptag">Start Date: {startDate.toDateString()}</p>
+      <p className="ptag">End Date: {endDate.toDateString()}</p>
       <Calendar value={startDate} onChange={(date) => setStartDate(date)} />
       <h2 className="header">Previous Expenses</h2>
       <ul>
