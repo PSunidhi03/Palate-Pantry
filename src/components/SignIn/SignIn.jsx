@@ -68,7 +68,7 @@ const SignIn = () => {
           </div>
           <div className="col-6 text-right">
             <p>No Account?</p>
-            <a href="#">
+            <a href="/signup">
               <p>Sign up</p>
             </a>
           </div>

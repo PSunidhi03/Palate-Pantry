@@ -19,7 +19,7 @@ function Header() {
             <a href="/pantry" className="header-link">Pantry</a>
           </nav>
           <div className="login-signup col-6 col-md-3 d-flex justify-content-end">
-            <a href="#login" className="btn btn-light">Login/Signup</a>
+        <a href="/signin" className="btn btn-light">Login/Signup</a>
           </div>
         </div>
       </div>

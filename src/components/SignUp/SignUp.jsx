@@ -63,7 +63,7 @@ const SignUp = () => {
           </div>
           <div className='col-6 text-right'>
             <p>Already have an account?</p>
-            <a href='#'><p>Sign in</p></a>
+            <a href='/signin'><p>Sign in</p></a>
           </div>
         </div>
         <div>
