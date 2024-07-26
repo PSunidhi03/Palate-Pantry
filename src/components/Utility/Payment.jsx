@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../../styles/paymentform.css'
+import '../../styles/paymentform.css';
 
 const PaymentForm = () => {
   const [amount, setAmount] = useState('');
@@ -39,14 +39,15 @@ const PaymentForm = () => {
   };
 
   return (
-    <div>
-      <h2>SwiftPay Payment Form</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="amount">Amount ($):</label>
+    <div className='payment-form-container'>
+      <h2 className='payment-form-title'>SwiftPay Payment Form</h2>
+      {error && <p className='payment-form-error'>{error}</p>}
+      {success && <p className='payment-form-success'>{success}</p>}
+      <form className='payment-form' onSubmit={handleSubmit}>
+        <div className='payment-form-field'>
+          <label className='payment-form-label' htmlFor="amount">Amount ($):</label>
           <input
+            className='payment-form-input'
             type="number"
             id="amount"
             value={amount}
@@ -54,9 +55,10 @@ const PaymentForm = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="cardNumber">Card Number:</label>
+        <div className='payment-form-field'>
+          <label className='payment-form-label' htmlFor="cardNumber">Card Number:</label>
           <input
+            className='payment-form-input'
             type="text"
             id="cardNumber"
             value={cardNumber}
@@ -64,9 +66,10 @@ const PaymentForm = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="expiryDate">Expiry Date (MM/YY):</label>
+        <div className='payment-form-field'>
+          <label className='payment-form-label' htmlFor="expiryDate">Expiry Date (MM/YY):</label>
           <input
+            className='payment-form-input'
             type="text"
             id="expiryDate"
             value={expiryDate}
@@ -74,9 +77,10 @@ const PaymentForm = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="cvv">CVV:</label>
+        <div className='payment-form-field'>
+          <label className='payment-form-label' htmlFor="cvv">CVV:</label>
           <input
+            className='payment-form-input'
             type="text"
             id="cvv"
             value={cvv}
@@ -84,10 +88,11 @@ const PaymentForm = () => {
             required
           />
         </div>
-        <button type="submit">Pay</button>
+        <button className='payment-form-button' type="submit">Pay</button>
       </form>
     </div>
   );
 };
 
 export default PaymentForm;
+
