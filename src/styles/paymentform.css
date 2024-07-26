@@ -1,0 +1,96 @@
+/* General styles */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #e9ecef;
+  color: #495057;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container for the form */
+div {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid #dee2e6;
+}
+
+/* Heading style */
+h2 {
+  margin-top: 0;
+  color: #007bff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input and label styles */
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #495057;
+}
+
+input[type="number"],
+input[type="text"] {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Button styling */
+button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Error and success messages */
+p {
+  text-align: center;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+p[style*="color: red"] {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+p[style*="color: green"] {
+  color: #28a745;
+  font-weight: bold;
+}
+
