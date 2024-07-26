@@ -257,6 +257,7 @@ const CardComponent = () => {
 
   const handleProceedToPayment = () => {
     const subtotal = calculateIngredientSubtotal();
+    console.log('subtotal: ', subtotal);
     navigate("/payment", { state: { subtotal } });
   };
 

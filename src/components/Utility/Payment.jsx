@@ -1,58 +1,56 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../styles/paymentform.css';
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../Auth/AuthContext";
 
 const PaymentForm = () => {
-  const [amount, setAmount] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, updateUserBudget } = useAuth();
+  const { subtotal } = location.state || { subtotal: 0 };
+
+  // Define state variables for form inputs
+  const [amount, setAmount] = useState(subtotal);
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Basic validation
-    if (!amount || !cardNumber || !expiryDate || !cvv) {
-      setError('Please fill in all fields.');
-      return;
-    }
+    event.preventDefault(); // Prevents the default form submission
 
     try {
-      // Replace with your SwiftPay API endpoint
-      const response = await axios.post('https://api.swiftpay.com/v1/charges', {
-        amount: amount,
-        card_number: cardNumber,
-        expiry_date: expiryDate,
-        cvv: cvv,
+      await axios.put(`http://localhost:3000/api/budget/${user.userid}`, {
+        spent_amount: amount,
       });
+      console.log("Budget updated");
 
-      // Handle successful response
-      setSuccess('Payment successful!');
-      setError(null);
-    } catch (err) {
-      // Handle error response
-      setError('Payment failed. Please try again.');
-      setSuccess(null);
+      // Update the AuthContext
+      updateUserBudget({
+        ...user.currentBudget,
+        spentAmount: user.currentBudget.spentAmount + amount,
+      });
+      console.log("User budget updated");
+
+      // Navigate to success page
+      navigate("/payment-success", { state: { amountSpent: amount } });
+      console.log("Navigated to /payment-success");
+    } catch (error) {
+      console.error("Payment failed:", error);
+      // Handle error (e.g., show a message to the user)
     }
   };
 
   return (
     <div className='payment-form-container'>
       <h2 className='payment-form-title'>SwiftPay Payment Form</h2>
-      {error && <p className='payment-form-error'>{error}</p>}
-      {success && <p className='payment-form-success'>{success}</p>}
-      <form className='payment-form' onSubmit={handleSubmit}>
+      <form className='payment-form' >
         <div className='payment-form-field'>
           <label className='payment-form-label' htmlFor="amount">Amount ($):</label>
           <input
             className='payment-form-input'
-            type="number"
             id="amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
+            value={subtotal}
           />
         </div>
         <div className='payment-form-field'>
@@ -61,9 +59,6 @@ const PaymentForm = () => {
             className='payment-form-input'
             type="text"
             id="cardNumber"
-            value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
-            required
           />
         </div>
         <div className='payment-form-field'>
@@ -72,9 +67,7 @@ const PaymentForm = () => {
             className='payment-form-input'
             type="text"
             id="expiryDate"
-            value={expiryDate}
-            onChange={(e) => setExpiryDate(e.target.value)}
-            required
+            
           />
         </div>
         <div className='payment-form-field'>
@@ -83,16 +76,15 @@ const PaymentForm = () => {
             className='payment-form-input'
             type="text"
             id="cvv"
-            value={cvv}
-            onChange={(e) => setCvv(e.target.value)}
-            required
           />
         </div>
-        <button className='payment-form-button' type="submit">Pay</button>
+        <button onClick={handleSubmit} className='payment-form-button' >Pay</button>
       </form>
     </div>
   );
 };
 
 export default PaymentForm;
+
+
 

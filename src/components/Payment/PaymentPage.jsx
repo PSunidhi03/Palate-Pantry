@@ -13,11 +13,10 @@ const PaymentPage = () => {
   const handlePayment = async () => {
     try {
       // Calculate the new spent amount
-      const newSpentAmount = (user.currentBudget.spentAmount || 0) + subtotal;
 
       // Make API call to update budget
       await axios.put(`http://localhost:3000/api/budget/${user.userid}`, {
-        spent_amount: newSpentAmount,
+        spent_amount: subtotal,
       });
 
       // Update the AuthContext

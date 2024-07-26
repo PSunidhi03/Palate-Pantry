@@ -1,5 +1,5 @@
-import "./App.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+// import "./App.css";
+// import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import SignIn from "./components/SignIn/SignIn";
@@ -30,7 +30,7 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/final-cart" element={<CartWithRecipe />} />
           <Route path="/pantry" element={<Pantry />} />
-          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment" element={<PaymentForm />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/" element={<Home />} />
           
