@@ -16,7 +16,7 @@
     margin: 20px 0;
     border-radius: 10px;
     font-family: 'Mansalva', cursive;
-    font-size: larger;
+    font-size: 1.2em; /* Increased base font size */
 }
 
 .about-us h1, .about-us h2 {
@@ -44,6 +44,7 @@
     background-color: #393939;
     border-left: 5px solid #ff6a00;
     border-radius: 5px;
+    font-size: 1.2em; /* Increased font size for paragraphs */
 }
 
 .image-scroller-container {
@@ -75,7 +76,6 @@
     }
 }
 
-
 .faq-section {
     margin-top: 30px;
     width: 90%; /* Ensure FAQ section has a consistent width */
@@ -85,10 +85,10 @@
     margin-bottom: 20px;
     background-color: #ff6a00;
     border-radius: 5px;
-    padding: 10px;
+    padding: 15px; /* Increased padding for better readability */
     cursor: pointer;
     transition: all 0.3s ease; /* Smooth transition */
-    font-size: larger;
+    font-size: 1.2em; /* Increased font size for FAQ items */
 }
 
 .faq-question {
@@ -103,17 +103,17 @@
     background-color: #e65c00;
     border-radius: 5px;
     display: none; /* Hide by default */
+    font-size: 1.2em; /* Increased font size for FAQ answers */
 }
 
 .faq.open .faq-answer {
     display: block; /* Show when FAQ is open */
 }
 
-
 .team-section {
     margin-top: 30px;
     text-align: center;
-    font-size: larger;
+    font-size: 1.2em; /* Increased font size for team section */
 }
 
 .team-member {
@@ -123,7 +123,9 @@
     padding: 10px;
     border-radius: 5px;
     display: inline-block;
+    font-size: 1.2em; /* Increased font size for team member items */
 }
+
 
 
 

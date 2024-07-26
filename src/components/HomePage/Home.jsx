@@ -22,7 +22,7 @@ const HomePage = () => {
         <Container>
           <Row className="text-center welcome-section">
             <Col>
-              <h2 className="welcome-text">Welcome to Palate-Pantry</h2>
+              <h2 className="welcome-text">WELCOME TO PALATE-PANTRY</h2>
               <p className="sub-text">
                 Your Culinary Companion: From Palate to Pantry
               </p>
