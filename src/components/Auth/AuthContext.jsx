@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from 'axios'; // Make sure to install axios
 
 const AuthContext = createContext();
 
@@ -77,6 +78,27 @@ export const AuthProvider = ({ children }) => {
     }));
   };
 
+  const refreshUserDetails = async () => {
+    if (!user || !user.userid) {
+      console.warn("No user is authenticated or user id is missing.");
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/users/getUserDetails', { user_id: user.userid });
+      setUser((prevUser) => ({
+        ...prevUser,
+        ...response.data,
+      }));
+      localStorage.setItem("user", JSON.stringify({
+        ...user,
+        ...response.data,
+      }));
+    } catch (error) {
+      console.error("Failed to refresh user details:", error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -89,6 +111,7 @@ export const AuthProvider = ({ children }) => {
         updateRecipeCart,
         updateIngredientCart,
         updateUserBudget,
+        refreshUserDetails,
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import { useAuth } from "../Auth/AuthContext";
 const PaymentForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, updateUserBudget } = useAuth();
+  const { user, updateUserBudget , refreshUserDetails} = useAuth();
   const { subtotal } = location.state || { subtotal: 0 };
 
   // Define state variables for form inputs
@@ -26,10 +26,11 @@ const PaymentForm = () => {
       console.log("Budget updated");
 
       // Update the AuthContext
-      updateUserBudget({
-        ...user.currentBudget,
-        spentAmount: user.currentBudget.spentAmount + amount,
-      });
+      // updateUserBudget({
+      //   ...user.currentBudget,
+      //   spentAmount: user.currentBudget.spentAmount + amount,
+      // });
+      refreshUserDetails();
       console.log("User budget updated");
 
       // Navigate to success page

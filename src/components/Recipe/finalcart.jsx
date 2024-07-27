@@ -302,7 +302,7 @@ const CardComponent = () => {
             <h1>Budget</h1>
               <h4>Current budget: {user.currentBudget.allocatedAmount}({user.currentBudget.period})</h4>
               <h4>Spent Amount: {user.currentBudget.spentAmount}</h4>
-              <h4>Remaining: {user.currentBudget.allocatedAmount - user.currentBudget.spentAmount}</h4>
+              <h4>Remaining: {(user.currentBudget.allocatedAmount - user.currentBudget.spentAmount).toFixed(2)}</h4>
           </div>
         </Col>
 

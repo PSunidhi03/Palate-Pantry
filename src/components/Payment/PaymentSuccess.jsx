@@ -9,7 +9,7 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
   const { amountSpent } = location.state || { amountSpent: 0 };
 
-  const remainingBudget = user.currentBudget.allocatedAmount - user.currentBudget.spentAmount - amountSpent;
+  const remainingBudget = user.currentBudget.allocatedAmount - user.currentBudget.spentAmount ;
 
   return (
     <Container>
